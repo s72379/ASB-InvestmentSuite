@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASNB Investment Suite | Hybrid Portfolio, Protection &amp; Legacy Planning</title>
+<!-- Include Chart.js for visualization -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Include jsPDF for simple PDF report export -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            margin: 0 0 8px 0;
+            color: var(--primary-dark);
+        }
+        header p {
+            color: var(--text-light);
+            margin: 0;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        button.secondary {
+            background-color: var(--success);
+            margin-top: 10px;
+        }
+        button.secondary:hover {
+            background-color: #059669;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .result-box {
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        .result-box.profit {
+            border-left-color: var(--success);
+        }
+        .result-box.warning {
+            border-left-color: var(--warning);
+        }
+        .result-box.danger {
+            border-left-color: var(--danger);
+        }
+        .result-box h3 {
+            margin: 0 0 6px 0;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .result-box .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 380px;
+            margin-top: 20px;
+        }
+        table.asnb-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        table.asnb-table th, table.asnb-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        table.asnb-table th {
+            background-color: #f1f5f9;
+            color: var(--text);
+            position: sticky;
+            top: 0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-fixed { background-color: #e0f2fe; color: #0369a1; }
+        .badge-variable { background-color: #fef3c7; color: #b45309; }
+        .scrollable-table {
+            max-height: 380px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+        .table-toggle-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .table-toggle-bar select {
+            width: auto;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .scrollable-table { overflow-x: auto; }
+        .asnb-table { min-width: 720px; }
+        @media(max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<style>
+:root{--navy:#10243a;--navy2:#173650;--accent:#0e8b83;--accent2:#e8f5f3;--soft:#f4f7fb}
+body{padding:0;background:#f3f6fa}.app-shell{display:flex;min-height:100vh}
+.sidebar{width:260px;flex:0 0 260px;background:linear-gradient(180deg,#10243a,#173650);color:#e8f0f7;padding:24px 16px;box-sizing:border-box;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;gap:12px;align-items:center;padding:4px 8px 28px}
+.brand-mark{width:38px;height:38px;border-radius:12px;background:#ffffff;color:#0e4f88;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px;overflow:hidden;padding:4px}
+.brand strong{display:block;font-size:16px}.brand small{color:#a9bdce;font-size:11px}
+.nav-label{font-size:10px;letter-spacing:1.4px;color:#8ca4b8;font-weight:800;padding:15px 10px 7px}
+.nav-item{width:100%;display:flex;gap:12px;align-items:center;text-align:left;background:transparent;color:#d8e4ee;padding:12px;border-radius:9px;font-size:13px;font-weight:600;margin:2px 0;border:none;cursor:pointer;}
+.nav-item span{width:20px;text-align:center;font-size:16px;color:#83cfc7}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-item.active{box-shadow:inset 3px 0 #20b7a8}
+.sidebar-note{font-size:10px;line-height:1.6;color:#9db1c2;border-top:1px solid rgba(255,255,255,.14);margin:28px 8px 0;padding-top:15px}
+.main-area{flex:1;min-width:0}
+.main-inner{max-width:1440px;padding:28px 34px;margin:0 auto}
+.page-header{text-align:left;margin:0 0 24px;padding:8px 0 18px;border-bottom:1px solid #dce5ed}
+.page-header h1{font-size:27px;color:#173650;margin:0 0 6px 0}
+.page-header p{font-size:13px;color:#64748b;margin:0}
+.module-panel{display:none}
+.module-panel.active{display:block}
+.module-heading{margin:0 0 20px}
+.module-heading h1{font-size:23px;margin:0 0 6px;color:#173650}
+.module-heading p,.hint{font-size:12px;color:#64748b;line-height:1.6}
+.module-panel .card{box-shadow:0 5px 20px rgba(23,54,80,.055);border-color:#e5ebf1}
+.module-panel .card h2{color:#173650}
+.module-panel button:not(.nav-item){background:#0e8b83}
+.module-panel button:not(.nav-item):hover{background:#08756e}
+.module-panel .result-box{border-left-color:#0e8b83}
+.module-panel .result-box.profit{border-left-color:#10a37f}
+.module-panel .result-box.warning{border-left-color:#e3a52e}
+.subheading{color:#173650;margin:22px 0 10px}
+.covr-benefit{width:130px;max-width:100%;padding:8px;border:1px solid #dbe3eb;border-radius:6px;box-sizing:border-box}
+.mobile-top{display:none}
+.chart-container{min-height:300px}
+@media(max-width:900px){.sidebar{width:225px;flex-basis:225px}.main-inner{padding:22px 18px}}
+@media(max-width:680px){.app-shell{display:block}.sidebar{position:fixed;z-index:20;left:-270px;top:0;width:260px;transition:left .2s}.sidebar.open{left:0}.main-inner{padding:16px 12px}.mobile-top{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border-bottom:1px solid #e5ebf1}.mobile-top button{width:auto;padding:8px 12px;background:#173650;color:#fff;border:none;border-radius:6px}.page-header h1{font-size:22px}.module-heading h1{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+  <div class="brand-mark">
+    <img src="https://www.asnb.com.my/images/logo-asnb.png" alt="ASNB Logo" style="width:100%;height:100%;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/>
+    <span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#0e4f88;">ASNB</span>
+  </div>
+  <div><strong>ASNB Suite</strong><small>Investment &amp; Protection</small></div>
+</div>
+<div class="nav-label">DASHBOARD</div>
+<button class="nav-item active" data-target="module-overview"><span>◫</span> Overview</button>
+<div class="nav-label">ASB INVESTMENT</div>
+<button class="nav-item" data-target="module-fixed"><span>▤</span> Fixed-Variable Calculator</button>
+<button class="nav-item" data-target="module-asb-plus"><span>✦</span> ASB Plus</button>
+<button class="nav-item" data-target="module-fpsp"><span>▦</span> ASB FPSP</button>
+<div class="nav-label">FINANCIAL PLANNING</div>
+<button class="nav-item" data-target="module-zakat"><span>◉</span> Zakat Calculator</button>
+<button class="nav-item" data-target="module-covr"><span>♡</span> ASNB COVR Hidupmu</button>
+<button class="nav-item" data-target="module-legacy"><span>⌂</span> Trust &amp; Will Planning</button>
+<div class="sidebar-note">Planning estimates only. Confirm product terms, eligibility and fees with ASNB or the relevant provider.</div>
+</aside>
+
+<main class="main-area">
+<div class="mobile-top"><button aria-label="Open menu" id="menuToggle">☰</button><strong>ASNB Investment Suite</strong></div>
+<div class="main-inner" id="mainInner">
+<header class="page-header">
+<h1>ASNB Investment Suite</h1>
+<p>Investment Strategy &amp; Finance Management</p>
+</header>
+
+<!-- 1. OVERVIEW -->
+<section class="module-panel active" id="module-overview">
+<div class="card">
+<h2>Types of ASNB Funds (Overview)</h2>
+<p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0;">ASNB funds are split into Fixed-Price funds (pegged at RM 1.00/unit) and Variable-Price funds (fluctuates based on NAV).</p>
+<table class="asnb-table">
+<thead>
+<tr>
+<th>Fund Category</th>
+<th>Examples</th>
+<th>Price Structure</th>
+<th>Risk Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed-Price Funds</strong></td>
+<td>ASB, ASB 2, ASM, ASM 2 Wawasan, ASM 3</td>
+<td><span class="badge badge-fixed">Fixed @ RM 1.00</span></td>
+<td>Low Risk / Capital Guaranteed</td>
+</tr>
+<tr>
+<td><strong>Variable-Price Funds</strong></td>
+<td>ASN Equity 2, ASN Imbang, ASN Sara, ASN Global</td>
+<td><span class="badge badge-variable">Floating (NAV based)</span></td>
+<td>Medium to High Risk / Growth potential</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="card" style="margin-top:18px;overflow:hidden">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+<div><h2 style="margin-bottom:4px">ASNB Updates &amp; Campaign Highlights</h2><p class="hint" style="margin:0">Official ASNB campaigns and announcements. Offers may be subject to eligibility and availability.</p></div>
+<span class="badge badge-fixed">Official ASNB links</span>
+</div>
+<div id="asnbAd" style="margin-top:14px;padding:22px;border-radius:12px;background:linear-gradient(110deg,#102b43,#17665f);color:#fff;min-height:116px">
+<div id="asnbAdTag" style="font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#9ce5d9;font-weight:800">FEATURED CAMPAIGN</div>
+<h3 id="asnbAdTitle" style="color:#fff;margin:8px 0">ASB Plus Investment Package</h3>
+<p id="asnbAdText" style="color:#e0f1ef;margin:0 0 12px;font-size:13px">Explore a combination of fixed-price and variable-price funds.</p>
+<a id="asnbAdLink" href="https://www.asnb.com.my/campaign/asb-plus-investment-package" target="_blank" rel="noopener" style="color:#a6f1e5;font-weight:700;font-size:13px">View official details →</a>
+</div>
+<div style="display:flex;gap:7px;justify-content:flex-end;margin-top:10px"><button type="button" class="secondary" id="asnbAdPrev" style="width:auto;padding:7px 12px">Previous</button><button type="button" class="secondary" id="asnbAdNext" style="width:auto;padding:7px 12px">Next</button></div>
+</div>
+</section>
+
+<!-- 2. FIXED-VARIABLE CALCULATOR -->
+<section class="module-panel" id="module-fixed">
+<div class="module-heading"><h1>Fixed-Variable Calculator</h1><p>Compare fixed-price and variable-price investment strategies, scenarios, timing and dividend projections.</p></div>
+<div class="card">
+<h2>Fixed-Price Calculator &amp; Scenario Analysis</h2>
+<div class="form-grid">
+<div class="input-group">
+<label for="monthlyAmount">Person A Monthly DCA (RM)</label>
+<input id="monthlyAmount" type="number" value="200"/>
+</div>
+<div class="input-group">
+<label for="annualLumpSum">Person B Yearly Lump-Sum (RM)</label>
+<input id="annualLumpSum" type="number" value="2400"/>
+</div>
+<div class="input-group">
+<label for="lumpSumMonth">Person B Top-Up Month</label>
+<select id="lumpSumMonth">
+<option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option>
+<option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option>
+<option value="9">September</option><option value="10">October</option><option selected value="11">November</option><option value="12">December</option>
+</select>
+</div>
+<div class="input-group">
+<label for="dividendRate">Expected Dividend Rate (%)</label>
+<input id="dividendRate" step="0.05" type="number" value="5.75"/>
+</div>
+<div class="input-group">
+<label for="worstRate">Worst-Case Rate (%)</label>
+<input id="worstRate" step="0.05" type="number" value="4.00"/>
+</div>
+<div class="input-group">
+<label for="bestRate">Best-Case Rate (%)</label>
+<input id="bestRate" step="0.05" type="number" value="7.00"/>
+</div>
+<div class="input-group">
+<label for="years">Long-Term Horizon (Years)</label>
+<input id="years" type="number" value="5"/>
+</div>
+</div>
+<button type="button" onclick="calculateAll()">Update All Calculations &amp; Charts</button>
+</div>
+
+<div class="two-column">
+<div class="card" style="margin-bottom:0;">
+<h2>Person A (Monthly DCA Strategy)</h2>
+<div class="results-grid" style="grid-template-columns: 1fr;">
+<div class="result-box"><h3>Total Units / Balance</h3><div class="value" id="aUnits">0.00 Units</div></div>
+<div class="result-box"><h3>Total Invested Capital</h3><div class="value" id="aInvested">RM 0.00</div></div>
+<div class="result-box"><h3>Ending Value (Principal + Div)</h3><div class="value" id="aTotalValue">RM 0.00</div></div>
+<div class="result-box profit"><h3>Total Profit</h3><div class="value" id="aProfit">RM 0.00</div></div>
+</div>
+</div>
+<div class="card" style="margin-bottom:0;">
+<h2>Person B (Yearly Lump-Sum Strategy — <span id="lumpMonthLabel">November</span>)</h2>
+<div class="results-grid" style="grid-template-columns: 1fr;">
+<div class="result-box"><h3>Total Units / Balance</h3><div class="value" id="bUnits">0.00 Units</div></div>
+<div class="result-box"><h3>Total Invested Capital</h3><div class="value" id="bInvested">RM 0.00</div></div>
+<div class="result-box"><h3>Ending Value (Principal + Div)</h3><div class="value" id="bTotalValue">RM 0.00</div></div>
+<div class="result-box profit"><h3>Total Profit</h3><div class="value" id="bProfit">RM 0.00</div></div>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+<h2>Investment Comparison</h2>
+<div class="scrollable-table" style="max-height:none;">
+<table class="asnb-table">
+<thead><tr><th>Metric</th><th>Person A — Monthly DCA</th><th>Person B — Yearly Lump Sum</th><th>Difference (A − B)</th></tr></thead>
+<tbody id="comparisonBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+<h2>Best / Expected / Worst-Case Scenario Analysis</h2>
+<div class="scrollable-table" style="max-height:none;">
+<table class="asnb-table">
+<thead><tr><th>Scenario</th><th>Dividend Rate</th><th>Person A Ending Value</th><th>Person B Ending Value</th><th>A − B</th></tr></thead>
+<tbody id="scenarioBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card" style="margin-top:24px;">
+<h2>Top-Up Timing Comparison</h2>
+<div class="scrollable-table" style="max-height:none;">
+<table class="asnb-table">
+<thead><tr><th>Top-Up Month</th><th>Annual Lump Sum</th><th>Estimated 1st-Year Dividend</th><th>End-of-Year Value</th><th>Difference vs November</th></tr></thead>
+<tbody id="timingComparisonBody"></tbody>
+</table>
+</div>
+<div class="chart-container" style="margin-top:20px;"><canvas id="timingChart"></canvas></div>
+</div>
+
+<div class="card">
+<h2>Growth Visualization &amp; Long-Term Projection</h2>
+<div class="chart-container"><canvas id="growthChart"></canvas></div>
+</div>
+
+<div class="card">
+<h2>Long-Term Investment Projection</h2>
+<div class="scrollable-table" style="max-height:380px;">
+<table class="asnb-table">
+<thead><tr><th>Year</th><th>Person A Invested</th><th>Person A Value</th><th>Person A Profit</th><th>Person B Invested</th><th>Person B Value</th><th>Person B Profit</th></tr></thead>
+<tbody id="projectionBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="table-toggle-bar">
+<h2 style="margin:0;border:none;padding:0;">Yearly / Monthly Dividend Table</h2>
+<div>
+<label for="tableMode" style="font-size:0.85rem;font-weight:600;margin-right:5px;">View Mode:</label>
+<select id="tableMode" onchange="calculateAll()">
+<option value="yearly">Yearly Dividend Table</option>
+<option value="monthly">Monthly Dividend Table (First 24 Months)</option>
+</select>
+</div>
+</div>
+<div class="scrollable-table">
+<table class="asnb-table" id="breakdownTable">
+<thead id="breakdownHead"></thead>
+<tbody id="breakdownBody"></tbody>
+</table>
+</div>
+<button type="button" class="secondary" onclick="exportPDFReport()">Export Current Dividend Table to PDF</button>
+</div>
+
+<div class="card">
+<h2>Variable-Price Calculator (NAV-Based)</h2>
+<div class="form-grid">
+<div class="input-group"><label for="varInvestment">Total Investment Amount (RM)</label><input id="varInvestment" type="number" value="5000"/></div>
+<div class="input-group"><label for="buyNav">Purchase NAV Price per Unit (RM)</label><input id="buyNav" step="0.001" type="number" value="1.050"/></div>
+<div class="input-group"><label for="currentNav">Current / Selling NAV Price (RM)</label><input id="currentNav" step="0.001" type="number" value="1.120"/></div>
+<div class="input-group"><label for="varDistRate">Annual Distribution Rate (%)</label><input id="varDistRate" step="0.05" type="number" value="4.50"/></div>
+</div>
+<div class="results-grid">
+<div class="result-box"><h3>Units Purchased</h3><div class="value" id="varUnits">0.00 Units</div></div>
+<div class="result-box"><h3>Current Market Value</h3><div class="value" id="varMarketVal">RM 0.00</div></div>
+<div class="result-box"><h3>Estimated Annual Dividend</h3><div class="value" id="varDividend">RM 0.00</div></div>
+<div class="result-box profit"><h3>Total Gain / Loss (Capital + Div)</h3><div class="value" id="varTotalGain">RM 0.00</div></div>
+</div>
+</div>
+</section>
+
+<!-- 3. ASB PLUS -->
+<section class="module-panel" id="module-asb-plus">
+<div class="module-heading"><h1>ASB Plus Package</h1><p>Simulate promotional bonus dividend campaigns with a fixed lock-in period and fixed/variable fund split.</p></div>
+<div class="card">
+<h2>ASB Plus Investment Inputs</h2>
+<input type="hidden" id="hybridPackage" value="ASB Plus"/>
+<div class="form-grid">
+<div class="input-group"><label for="hybridCapital">Investment Capital (RM)</label><input id="hybridCapital" min="0" type="number" value="10000"/></div>
+<div class="input-group">
+<label for="fixedShare">Fixed-Price Allocation (%)</label>
+<select id="fixedShare">
+<option value="40">40%</option><option selected value="60">60%</option><option value="50">50%</option><option value="70">70%</option>
+</select>
+</div>
+<div class="input-group"><label for="variableShare">Variable-Price Allocation (%)</label><input id="variableShare" readonly type="number" value="40"/></div>
+<div class="input-group"><label for="fixedRate">Estimated Fixed-Price Return (% p.a.)</label><input id="fixedRate" step=".01" type="number" value="5.5"/></div>
+<div class="input-group"><label for="variableRate">Estimated Variable-Price Return (% p.a.)</label><input id="variableRate" step=".01" type="number" value="6"/></div>
+<div class="input-group"><label for="campaignBonus">Campaign Bonus (% p.a.)</label><input id="campaignBonus" step=".01" type="number" value="1"/></div>
+<div class="input-group"><label for="lockPeriod">Lock-in Period (years)</label><input id="lockPeriod" min="0" step="1" type="number" value="3"/></div>
+<div class="input-group"><label for="salesCharge">Variable-Price Fund Sales Charge (%)</label><input id="salesCharge" min="0" step=".01" type="number" value="1.5"/></div>
+</div>
+<button type="button" id="calculateHybrid">Calculate ASB Plus</button>
+</div>
+<div class="card">
+<h2>Allocation &amp; Asset Breakdown</h2>
+<div class="results-grid">
+<div class="result-box"><h3>Fixed Price</h3><div class="value" id="fixedAllocationRM">RM 0.00</div><small id="fixedAllocationPct">60%</small></div>
+<div class="result-box"><h3>Variable Price</h3><div class="value" id="variableAllocationRM">RM 0.00</div><small id="variableAllocationPct">40%</small></div>
+<div class="result-box warning"><h3>Estimated Sales Charge</h3><div class="value" id="salesChargeRM">RM 0.00</div></div>
+<div class="result-box profit"><h3>Capital After Sales Charge</h3><div class="value" id="netHybridCapital">RM 0.00</div></div>
+</div>
+<div class="scrollable-table"><table class="asnb-table"><thead><tr><th>Category</th><th>Example Funds</th><th>Allocation</th><th>Amount</th></tr></thead><tbody id="allocationRows"></tbody></table></div>
+</div>
+<div class="card">
+<h2>Return Simulation &amp; Projection</h2>
+<div class="results-grid">
+<div class="result-box"><h3>Estimated Base Return</h3><div class="value" id="hybridBaseReturn">RM 0.00</div></div>
+<div class="result-box profit"><h3>Estimated Campaign Bonus</h3><div class="value" id="hybridBonusReturn">RM 0.00</div></div>
+<div class="result-box profit"><h3>Total First-Year Return</h3><div class="value" id="hybridTotalReturn">RM 0.00</div></div>
+<div class="result-box"><h3>Estimated Value After One Year</h3><div class="value" id="hybridEndingValue">RM 0.00</div></div>
+</div>
+<p class="hint" id="hybridLockText">Lock-in period: 3 years.</p>
+<div class="chart-container"><canvas id="hybridChart"></canvas></div>
+</div>
+</section>
+
+<!-- 4. ASB FPSP -->
+<section class="module-panel" id="module-fpsp">
+<div class="module-heading">
+  <h1>ASB Financial Planning Solution Package (FPSP)</h1>
+  <p>Build a structured multi-year wealth plan combining lump-sum and monthly recurring investments toward a specific financial goal.</p>
+</div>
+<div class="card">
+  <h2>FPSP Goal &amp; Portfolio Builder</h2>
+  <p class="hint">Unlike short-term promotional bonus packages (ASB Plus), FPSP is structured around long-term goal accumulation (Retirement, Education, Home Ownership) with flexible monthly recurring top-ups and custom fund ratios.</p>
+  <div class="form-grid">
+    <div class="input-group">
+      <label for="fpspGoalType">Financial Planning Goal</label>
+      <select id="fpspGoalType">
+        <option value="Retirement Fund">Retirement Fund</option>
+        <option value="Child Education">Child Education</option>
+        <option value="Property Downpayment">Property Downpayment</option>
+        <option value="General Wealth Accumulation">General Wealth Accumulation</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="fpspTargetGoal">Target Goal Amount (RM)</label>
+      <input id="fpspTargetGoal" type="number" min="0" value="100000"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspCapital">Initial Lump-Sum Capital (RM)</label>
+      <input id="fpspCapital" type="number" min="0" value="10000"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspMonthlyTopup">Monthly Recurring Top-Up (RM)</label>
+      <input id="fpspMonthlyTopup" type="number" min="0" value="500"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspHorizon">Planning Horizon (Years)</label>
+      <input id="fpspHorizon" type="number" min="1" max="35" value="10"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspFixedPct">Fixed-Price Allocation (%)</label>
+      <input id="fpspFixedPct" type="number" min="0" max="100" value="50"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspFixedRate">Fixed-Price Return (% p.a.)</label>
+      <input id="fpspFixedRate" type="number" step="0.01" value="5.25"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspVariableRate">Variable-Price Return (% p.a.)</label>
+      <input id="fpspVariableRate" type="number" step="0.01" value="6.50"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspSalesCharge">Variable-Price Sales Charge (%)</label>
+      <input id="fpspSalesCharge" type="number" min="0" step="0.01" value="1.75"/>
+    </div>
+  </div>
+  <button type="button" id="calculateFPSP">Calculate FPSP Goal Projection</button>
+</div>
+<div class="card">
+  <h2>Goal Achievement &amp; Multi-Year Projection (<span id="fpspGoalLabel">Retirement Fund</span>)</h2>
+  <div class="results-grid">
+    <div class="result-box"><h3>Total Principal Contributed</h3><div class="value" id="fpspTotalPrincipal">RM 0.00</div></div>
+    <div class="result-box warning"><h3>Total Sales Charges Paid</h3><div class="value" id="fpspCharge">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Projected Portfolio Value</h3><div class="value" id="fpspEnding">RM 0.00</div></div>
+    <div class="result-box"><h3>Total Investment Gain</h3><div class="value" id="fpspReturn">RM 0.00</div></div>
+    <div class="result-box profit" id="fpspGoalStatusBox"><h3>Goal Gap / Surplus</h3><div class="value" id="fpspGoalGap">RM 0.00</div><small id="fpspGoalStatusText">Target: RM 100,000.00</small></div>
+  </div>
+  <div class="chart-container"><canvas id="fpspChart"></canvas></div>
+  <p class="hint">Illustration only. Review official FPSP terms and participating funds on the <a href="https://www.asnb.com.my/campaign/fpsp-2026/" target="_blank" rel="noopener">official ASNB FPSP 2026 page</a>.</p>
+</div>
+</section>
+
+<!-- 5. ZAKAT CALCULATOR (Class A first, Class B second) -->
+<section class="module-panel" id="module-zakat">
+<div class="module-heading">
+  <h1>Zakat Calculation</h1>
+  <p>Estimate Class A (Wealth Zakat) and Class B (Auto-Deducted Dividend Zakat) using the assumptions entered.</p>
+</div>
+<div class="card">
+  <h2>Class A Zakat Calculator (Wealth / Haul &amp; Nisab Zakat)</h2>
+  <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0;">Calculates 2.5% Zakat on total accumulated investment balance once it meets or exceeds the Nisab threshold.</p>
+  <div class="form-grid">
+    <div class="input-group"><label for="zakatWealth">Total Eligible Balance (RM)</label><input id="zakatWealth" type="number" value="30000"/></div>
+    <div class="input-group"><label for="nisabThreshold">Current Nisab Threshold (RM)</label><input id="nisabThreshold" type="number" value="23500"/></div>
+  </div>
+  <div class="results-grid">
+    <div class="result-box"><h3>Nisab Status</h3><div class="value" id="zakatStatus">Above Nisab</div></div>
+    <div class="result-box warning"><h3>Zakat Payable (2.5%)</h3><div class="value" id="zakatPayable">RM 0.00</div></div>
+  </div>
+</div>
+<div class="card">
+  <h2>Class B Zakat Calculator (Income Distribution Deduction)</h2>
+  <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0;">Shows how Class B auto-deducts 2.57% Zakat directly from your annual dividend payout.</p>
+  <div class="form-grid">
+    <div class="input-group"><label for="classbPrincipal">Total ASB Investment (RM)</label><input id="classbPrincipal" type="number" value="10000"/></div>
+    <div class="input-group"><label for="classbGrossRate">Gross Dividend Rate (%)</label><input id="classbGrossRate" step="0.05" type="number" value="5.75"/></div>
+    <div class="input-group"><label for="classbZakatRate">Class B Zakat Rate (%)</label><input id="classbZakatRate" step="0.01" type="number" value="2.57"/></div>
+  </div>
+  <div class="results-grid">
+    <div class="result-box"><h3>Gross Dividend (RM)</h3><div class="value" id="cbGrossDiv">RM 0.00</div></div>
+    <div class="result-box warning"><h3>Zakat Deducted (RM)</h3><div class="value" id="cbZakatDeducted">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Net Dividend Received (RM)</h3><div class="value" id="cbNetDiv">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Effective Net Rate (%)</h3><div class="value" id="cbNetRate">0.00%</div></div>
+  </div>
+</div>
+</section>
+
+<!-- 6. ASNB COVR HIDUPMU -->
+<section class="module-panel" id="module-covr">
+<div class="module-heading"><h1>ASNB COVR Hidupmu</h1><p>Select a contribution tier and enter the official benefit values from the product disclosure.</p></div>
+<div class="card">
+<h2>Takaful Plan Calculator</h2>
+<div class="form-grid">
+<div class="input-group"><label for="covrPlan">Select ASNB COVR Plan</label><select id="covrPlan"><option value="40">ASNB COVR 40 — RM40/month</option><option value="60">ASNB COVR 60 — RM60/month</option><option value="80">ASNB COVR 80 — RM80/month</option><option value="100">ASNB COVR 100 — RM100/month</option><option value="120">ASNB COVR 120 — RM120/month</option><option value="140">ASNB COVR 140 — RM140/month</option><option value="160">ASNB COVR 160 — RM160/month</option><option value="180">ASNB COVR 180 — RM180/month</option><option value="200">ASNB COVR 200 — RM200/month</option></select></div>
+</div>
+<div class="results-grid">
+<div class="result-box"><h3>Monthly Contribution</h3><div class="value" id="covrMonthly">RM40.00</div></div>
+<div class="result-box"><h3>Estimated Annual Contribution</h3><div class="value" id="covrAnnual">RM480.00</div></div>
+</div>
+<p class="hint">Benefit amounts are not pre-filled with assumptions. Enter the exact figures from the official benefit schedule / takaful certificate.</p>
+</div>
+<div class="card">
+<h2>Protection Matrix — Adult &amp; Minor</h2>
+<div class="scrollable-table" style="max-height:none">
+<table class="asnb-table">
+<thead><tr><th>Benefit</th><th>Adult (RM)</th><th>Minor (RM)</th></tr></thead>
+<tbody>
+<tr><td>Death / TPD — Natural Causes</td><td><input class="covr-benefit" data-key="adultNatural" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorNatural" min="0" placeholder="Enter RM" type="number"/></td></tr>
+<tr><td>Death / TPD — Accidental Causes</td><td><input class="covr-benefit" data-key="adultAccident" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorAccident" min="0" placeholder="Enter RM" type="number"/></td></tr>
+<tr><td>Critical Illness</td><td><input class="covr-benefit" data-key="adultCritical" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorCritical" min="0" placeholder="Enter RM" type="number"/></td></tr>
+<tr><td>Bereavement / Funeral Expense</td><td><input class="covr-benefit" data-key="adultFuneral" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorFuneral" min="0" placeholder="Enter RM" type="number"/></td></tr>
+</tbody>
+</table>
+</div>
+<h3 class="subheading">Additional Family Coverage</h3>
+<div class="form-grid">
+<div class="input-group"><label for="covrSpouse">Spouse (RM)</label><input id="covrSpouse" min="0" placeholder="Enter official amount" type="number"/></div>
+<div class="input-group"><label for="covrChild1">Child 1 (RM)</label><input id="covrChild1" min="0" placeholder="Enter official amount" type="number"/></div>
+<div class="input-group"><label for="covrChild2">Child 2 (RM)</label><input id="covrChild2" min="0" placeholder="Enter official amount" type="number"/></div>
+<div class="input-group"><label for="covrChild3">Child 3 (RM)</label><input id="covrChild3" min="0" placeholder="Enter official amount" type="number"/></div>
+</div>
+<div class="result-box"><h3>Total Recorded Family Coverage</h3><div class="value" id="covrFamilyTotal">RM 0.00</div></div>
+</div>
+</section>
+
+<!-- 7. TRUST & WILL PLANNING -->
+<section class="module-panel" id="module-legacy">
+<div class="module-heading"><h1>Trust &amp; Will Planning</h1><p>Review beneficiary-planning status, indicative settlement timelines and estimated fees.</p></div>
+<div class="card">
+<h2>Beneficiary Status Management</h2>
+<div class="form-grid">
+<div class="input-group"><label for="legacyStatus">Planning / Registration Status</label><select id="legacyStatus"><option value="none">Not registered / not declared</option><option value="hibah">ASNB Hibah Amanah</option><option value="trust">ASNB Trust Declaration</option><option value="will">Will / other planning</option></select></div>
+<div class="input-group"><label for="estateBalance">Investment Balance (RM)</label><input id="estateBalance" min="0" type="number" value="50000"/></div>
+</div>
+<div class="result-box"><h3>Current Status</h3><div class="value" id="legacyStatusText">Not registered / not declared</div></div>
+</div>
+<div class="card">
+<h2>Claim Settlement Timeline Simulation</h2>
+<div class="two-column">
+<div class="result-box profit"><h3>With ASNB Hibah Amanah</h3><div class="value">21 days</div><p class="hint">Illustrative timeline only.</p></div>
+<div class="result-box warning"><h3>Without Estate Planning</h3><div class="value">1–3 years</div><p class="hint">Illustrative estimate only.</p></div>
+</div>
+</div>
+<div class="card">
+<h2>Estimated Administration &amp; Claim Fee Calculator</h2>
+<div class="form-grid">
+<div class="input-group"><label for="feeFirstRate">Rate for First RM25,000 (%)</label><input id="feeFirstRate" step=".01" type="number" value="1.5"/></div>
+<div class="input-group"><label for="feeRemainderRate">Rate for Remaining Balance (%)</label><input id="feeRemainderRate" step=".01" type="number" value="0.10"/></div>
+<div class="input-group"><label for="feeThreshold">First Tier Threshold (RM)</label><input id="feeThreshold" type="number" value="25000"/></div>
+</div>
+<div class="results-grid">
+<div class="result-box"><h3>First Tier Fee</h3><div class="value" id="feeFirst">RM 0.00</div></div>
+<div class="result-box"><h3>Remaining Balance Fee</h3><div class="value" id="feeRemainder">RM 0.00</div></div>
+<div class="result-box warning"><h3>Estimated Total Fee</h3><div class="value" id="feeTotal">RM 0.00</div></div>
+<div class="result-box"><h3>Estimated Net Balance After Fees</h3><div class="value" id="estateAfterFee">RM 0.00</div></div>
+</div>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+
+<script>
+let myChart = null;
+let lastResults = { tableMode: 'yearly', tableRows: [], tableHeaders: [] };
+
+function getNumber(id, fallback = 0) {
+    const el = document.getElementById(id);
+    if (!el) return fallback;
+    const value = parseFloat(el.value);
+    return Number.isFinite(value) ? value : fallback;
+}
+
+function formatRM(amount) {
+    const safeAmount = Number.isFinite(amount) ? amount : 0;
+    return 'RM ' + safeAmount.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatNumber(amount) {
+    const safeAmount = Number.isFinite(amount) ? amount : 0;
+    return safeAmount.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function simulateStrategy(strategy, depositAmount, annualRate, totalYears, captureTable, lumpSumMonth = 11) {
+    let balance = 0;
+    let invested = 0;
+    const yearly = [];
+    const monthly = [];
+    const rate = Math.max(0, annualRate) / 100;
+    const monthsPerYear = 12;
+
+    for (let year = 1; year <= totalYears; year++) {
+        let yearDividend = 0;
+        for (let month = 1; month <= monthsPerYear; month++) {
+            let deposit = 0;
+            if (strategy === 'monthly') {
+                deposit = depositAmount;
+            } else if (strategy === 'lump' && month === lumpSumMonth) {
+                deposit = depositAmount;
+            }
+            balance += deposit;
+            invested += deposit;
+            const monthlyDividend = balance * (rate / monthsPerYear);
+            yearDividend += monthlyDividend;
+
+            if (captureTable && year <= 2) {
+                monthly.push({
+                    period: 'Yr ' + year + ' - ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][month - 1],
+                    deposit: deposit,
+                    dividend: monthlyDividend,
+                    valueBeforeYearEndDividend: balance
+                });
+            }
+        }
+        balance += yearDividend;
+        yearly.push({ year: year, invested: invested, dividend: yearDividend, value: balance, profit: balance - invested });
+    }
+    return { endingValue: balance, invested: invested, profit: balance - invested, yearly: yearly, monthly: monthly };
+}
+
+function renderDividendTable(resultA, resultB, tableMode) {
+    const head = document.getElementById('breakdownHead');
+    const body = document.getElementById('breakdownBody');
+    if (!head || !body) return;
+
+    let headers, rows = [];
+    if (tableMode === 'monthly') {
+        headers = ['Month', 'Person A Deposit', 'Person A Dividend', 'Person A Value', 'Person B Deposit', 'Person B Dividend', 'Person B Value'];
+        const maxRows = Math.max(resultA.monthly.length, resultB.monthly.length);
+        for (let i = 0; i < maxRows; i++) {
+            const a = resultA.monthly[i] || {};
+            const b = resultB.monthly[i] || {};
+            rows.push([
+                a.period || b.period || '',
+                formatRM(a.deposit || 0), formatRM(a.dividend || 0), formatRM(a.valueBeforeYearEndDividend || 0),
+                formatRM(b.deposit || 0), formatRM(b.dividend || 0), formatRM(b.valueBeforeYearEndDividend || 0)
+            ]);
+        }
+    } else {
+        headers = ['Year', 'Person A Principal', 'Person A Dividend', 'Person A Total', 'Person B Principal', 'Person B Dividend', 'Person B Total'];
+        const maxRows = Math.max(resultA.yearly.length, resultB.yearly.length);
+        for (let i = 0; i < maxRows; i++) {
+            const a = resultA.yearly[i] || {};
+            const b = resultB.yearly[i] || {};
+            rows.push([
+                'Year ' + (a.year || b.year || ''),
+                formatRM(a.invested || 0), formatRM(a.dividend || 0), formatRM(a.value || 0),
+                formatRM(b.invested || 0), formatRM(b.dividend || 0), formatRM(b.value || 0)
+            ]);
+        }
+    }
+    head.innerHTML = '<tr>' + headers.map(h => '<th>' + h + '</th>').join('') + '</tr>';
+    body.innerHTML = rows.map(row => '<tr>' + row.map(cell => '<td>' + cell + '</td>').join('') + '</tr>').join('');
+    lastResults.tableHeaders = headers;
+    lastResults.tableRows = rows;
+}
+
+function renderComparison(resultA, resultB) {
+    const el = document.getElementById('comparisonBody');
+    if (!el) return;
+    const diffVal = resultA.endingValue - resultB.endingValue;
+    const diffInv = resultA.invested - resultB.invested;
+    const diffProf = resultA.profit - resultB.profit;
+    el.innerHTML = `
+        <tr><td><strong>Total Invested</strong></td><td>${formatRM(resultA.invested)}</td><td>${formatRM(resultB.invested)}</td><td>${formatRM(diffInv)}</td></tr>
+        <tr><td><strong>Ending Value</strong></td><td>${formatRM(resultA.endingValue)}</td><td>${formatRM(resultB.endingValue)}</td><td>${formatRM(diffVal)}</td></tr>
+        <tr><td><strong>Total Profit</strong></td><td>${formatRM(resultA.profit)}</td><td>${formatRM(resultB.profit)}</td><td>${formatRM(diffProf)}</td></tr>
+        <tr><td><strong>Profit / Invested</strong></td><td>${resultA.invested ? (resultA.profit / resultA.invested * 100).toFixed(2) : '0.00'}%</td><td>${resultB.invested ? (resultB.profit / resultB.invested * 100).toFixed(2) : '0.00'}%</td><td>${(resultA.invested && resultB.invested) ? ((resultA.profit / resultA.invested * 100) - (resultB.profit / resultB.invested * 100)).toFixed(2) : '0.00'}%</td></tr>
+    `;
+}
+
+function renderScenarios(monthlyAmt, lumpSumAmt, worstRate, baseRate, bestRate, years, lumpSumMonth) {
+    const el = document.getElementById('scenarioBody');
+    if (!el) return;
+    const scenarios = [{ name: 'Worst Case', rate: worstRate }, { name: 'Expected / Base Case', rate: baseRate }, { name: 'Best Case', rate: bestRate }];
+    el.innerHTML = scenarios.map(s => {
+        const a = simulateStrategy('monthly', monthlyAmt, s.rate, years, false);
+        const b = simulateStrategy('lump', lumpSumAmt, s.rate, years, false, lumpSumMonth);
+        return `<tr><td><strong>${s.name}</strong></td><td>${s.rate.toFixed(2)}%</td><td>${formatRM(a.endingValue)}</td><td>${formatRM(b.endingValue)}</td><td>${formatRM(a.endingValue - b.endingValue)}</td></tr>`;
+    }).join('');
+}
+
+function renderProjection(resultA, resultB) {
+    const el = document.getElementById('projectionBody');
+    if (!el) return;
+    const maxRows = Math.max(resultA.yearly.length, resultB.yearly.length);
+    el.innerHTML = Array.from({ length: maxRows }, (_, i) => {
+        const a = resultA.yearly[i] || {};
+        const b = resultB.yearly[i] || {};
+        return `<tr><td>Year ${a.year || b.year || ''}</td><td>${formatRM(a.invested || 0)}</td><td><strong>${formatRM(a.value || 0)}</strong></td><td>${formatRM(a.profit || 0)}</td><td>${formatRM(b.invested || 0)}</td><td><strong>${formatRM(b.value || 0)}</strong></td><td>${formatRM(b.profit || 0)}</td></tr>`;
+    }).join('');
+}
+
+function renderTimingComparison(lumpSumAmt, baseRate) {
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const results = monthNames.map((name, index) => {
+        const month = index + 1;
+        const res = simulateStrategy('lump', lumpSumAmt, baseRate, 1, false, month);
+        return { month, name, dividend: res.yearly[0]?.dividend || 0, value: res.endingValue };
+    });
+    const nov = results[10]?.dividend || 0;
+    const el = document.getElementById('timingComparisonBody');
+    if (el) {
+        el.innerHTML = results.map(item => `<tr${item.month === 11 ? ' style="font-weight:700;"' : ''}><td>${item.name}${item.month === 11 ? ' (Default)' : ''}</td><td>${formatRM(lumpSumAmt)}</td><td>${formatRM(item.dividend)}</td><td><strong>${formatRM(item.value)}</strong></td><td>${formatRM(item.dividend - nov)}</td></tr>`).join('');
+    }
+    const canvas = document.getElementById('timingChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+    if (window.timingChartInstance) window.timingChartInstance.destroy();
+    window.timingChartInstance = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: results.map(i => i.name),
+            datasets: [{ label: 'Estimated 1st-Year Dividend', data: results.map(i => i.dividend), backgroundColor: 'rgba(2, 132, 199, 0.65)', borderColor: '#0284c7', borderWidth: 1 }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { callback: v => 'RM ' + Number(v).toLocaleString() } } }
+        }
+    });
+}
+
+function renderChart(resultA, resultB) {
+    const canvas = document.getElementById('growthChart');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const labels = resultA.yearly.map(r => 'Year ' + r.year);
+    if (myChart) myChart.destroy();
+    myChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: 'Person A — Monthly DCA', data: resultA.yearly.map(r => r.value), borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.10)', borderWidth: 3, fill: true, tension: 0.2 },
+                { label: 'Person B — Yearly Lump Sum', data: resultB.yearly.map(r => r.value), borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.10)', borderWidth: 3, fill: true, tension: 0.2 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, ticks: { callback: v => 'RM ' + Number(v).toLocaleString() } } }
+        }
+    });
+}
+
+function calculateAll() {
+    const monthlyAmt = Math.max(0, getNumber('monthlyAmount'));
+    const lumpSumAmt = Math.max(0, getNumber('annualLumpSum'));
+    const baseRate = Math.max(0, getNumber('dividendRate'));
+    const worstRate = Math.max(0, getNumber('worstRate'));
+    const bestRate = Math.max(0, getNumber('bestRate'));
+    const totalYears = Math.max(1, Math.floor(getNumber('years', 1)));
+    const tableMode = document.getElementById('tableMode')?.value || 'yearly';
+    const lumpSumMonth = Math.min(12, Math.max(1, parseInt(document.getElementById('lumpSumMonth')?.value, 10) || 11));
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const selectedLumpMonthName = monthNames[lumpSumMonth - 1];
+    const lbl = document.getElementById('lumpMonthLabel');
+    if (lbl) lbl.innerText = selectedLumpMonthName;
+
+    const resultA = simulateStrategy('monthly', monthlyAmt, baseRate, totalYears, true);
+    const resultB = simulateStrategy('lump', lumpSumAmt, baseRate, totalYears, true, lumpSumMonth);
+
+    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+    setVal('aUnits', formatNumber(resultA.endingValue) + ' Units');
+    setVal('aInvested', formatRM(resultA.invested));
+    setVal('aTotalValue', formatRM(resultA.endingValue));
+    setVal('aProfit', formatRM(resultA.profit));
+
+    setVal('bUnits', formatNumber(resultB.endingValue) + ' Units');
+    setVal('bInvested', formatRM(resultB.invested));
+    setVal('bTotalValue', formatRM(resultB.endingValue));
+    setVal('bProfit', formatRM(resultB.profit));
+
+    renderComparison(resultA, resultB);
+    renderScenarios(monthlyAmt, lumpSumAmt, worstRate, baseRate, bestRate, totalYears, lumpSumMonth);
+    renderProjection(resultA, resultB);
+    renderChart(resultA, resultB);
+    renderTimingComparison(lumpSumAmt, baseRate);
+    renderDividendTable(resultA, resultB, tableMode);
+
+    // Variable-price
+    const varInv = Math.max(0, getNumber('varInvestment'));
+    const buyNav = Math.max(0.000001, getNumber('buyNav', 1));
+    const currentNav = Math.max(0, getNumber('currentNav'));
+    const varDistRate = Math.max(0, getNumber('varDistRate')) / 100;
+    const varUnits = varInv / buyNav;
+    const varMarketVal = varUnits * currentNav;
+    const varDividend = varMarketVal * varDistRate;
+    const varTotalGain = (varMarketVal - varInv) + varDividend;
+
+    setVal('varUnits', formatNumber(varUnits) + ' Units');
+    setVal('varMarketVal', formatRM(varMarketVal));
+    setVal('varDividend', formatRM(varDividend));
+    setVal('varTotalGain', formatRM(varTotalGain));
+
+    // Zakat Class A
+    const zakatWealth = Math.max(0, getNumber('zakatWealth'));
+    const nisabThreshold = Math.max(0, getNumber('nisabThreshold'));
+    if (zakatWealth >= nisabThreshold) {
+        setVal('zakatStatus', 'Above Nisab (Obligated)');
+        setVal('zakatPayable', formatRM(zakatWealth * 0.025));
+    } else {
+        setVal('zakatStatus', 'Below Nisab (Not Obligated)');
+        setVal('zakatPayable', formatRM(0));
+    }
+
+    // Zakat Class B
+    const cbPrincipal = Math.max(0, getNumber('classbPrincipal'));
+    const cbGrossRate = Math.max(0, getNumber('classbGrossRate'));
+    const cbZakatRate = Math.max(0, getNumber('classbZakatRate'));
+    const grossDiv = cbPrincipal * (cbGrossRate / 100);
+    const zakatDeducted = grossDiv * (cbZakatRate / 100);
+    const netDiv = grossDiv - zakatDeducted;
+    const netRate = cbGrossRate * (1 - cbZakatRate / 100);
+
+    setVal('cbGrossDiv', formatRM(grossDiv));
+    setVal('cbZakatDeducted', formatRM(zakatDeducted));
+    setVal('cbNetDiv', formatRM(netDiv));
+    setVal('cbNetRate', netRate.toFixed(2) + '%');
+
+    lastResults = { tableMode, tableRows: lastResults.tableRows, tableHeaders: lastResults.tableHeaders, lumpSumMonth, lumpSumMonthName: selectedLumpMonthName };
+}
+
+function exportPDFReport() {
+    if (!window.jspdf || !window.jspdf.jsPDF) {
+        alert('PDF library could not be loaded.');
+        return;
+    }
+    if (!lastResults.tableRows || !lastResults.tableRows.length) {
+        alert('Please calculate the dashboard first.');
+        return;
+    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const pageWidth = 297, pageHeight = 210, margin = 10;
+    const colCount = lastResults.tableHeaders.length;
+    const colWidth = (pageWidth - margin * 2) / colCount;
+    const rowHeight = 7;
+    let y = 12;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text(lastResults.tableMode === 'monthly' ? 'ASB / ASNB Monthly Dividend Table' : 'ASB / ASNB Yearly Dividend Table', margin, y);
+    y += 7;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.text('Generated: ' + new Date().toLocaleDateString('en-MY'), margin, y);
+    y += 7;
+
+    function drawCell(textValue, x, top, width, height, bold) {
+        doc.rect(x, top, width, height);
+        doc.setFont('helvetica', bold ? 'bold' : 'normal');
+        doc.setFontSize(7);
+        const clipped = String(textValue).length > 24 ? String(textValue).slice(0, 23) + '…' : String(textValue);
+        doc.text(clipped, x + 1.5, top + 4.5);
+    }
+    function drawHeader() {
+        for (let c = 0; c < colCount; c++) drawCell(lastResults.tableHeaders[c], margin + c * colWidth, y, colWidth, rowHeight, true);
+        y += rowHeight;
+    }
+    drawHeader();
+    for (let r = 0; r < lastResults.tableRows.length; r++) {
+        if (y + rowHeight > pageHeight - margin) { doc.addPage(); y = margin; drawHeader(); }
+        const row = lastResults.tableRows[r];
+        for (let c = 0; c < colCount; c++) drawCell(row[c], margin + c * colWidth, y, colWidth, rowHeight, false);
+        y += rowHeight;
+    }
+    doc.save(lastResults.tableMode === 'monthly' ? 'ASNB_Monthly_Dividend_Table.pdf' : 'ASNB_Yearly_Dividend_Table.pdf');
+}
+
+window.onload = function () {
+    // Navigation wiring
+    const navItems = [...document.querySelectorAll('.nav-item')];
+    const panels = [...document.querySelectorAll('.module-panel')];
+    function showModule(id) {
+        panels.forEach(p => p.classList.toggle('active', p.id === id));
+        navItems.forEach(b => b.classList.toggle('active', b.dataset.target === id));
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) sidebar.classList.remove('open');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (id === 'module-fixed' && typeof calculateAll === 'function') calculateAll();
+    }
+    navItems.forEach(b => b.addEventListener('click', () => showModule(b.dataset.target)));
+    const menuToggle = document.getElementById('menuToggle');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('open');
+        });
+    }
+
+    // Calculations
+    calculateAll();
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('input', () => {
+            calculateAll();
+        });
+    });
+
+    // ASB Plus calc wiring
+    const calcHybridBtn = document.getElementById('calculateHybrid');
+    function calcHybrid() {
+        const capital = Math.max(0, getNumber('hybridCapital'));
+        const fixedShareSel = document.getElementById('fixedShare');
+        const fixedPct = fixedShareSel ? Math.min(100, Math.max(0, parseFloat(fixedShareSel.value) || 60)) : 60;
+        const variablePct = 100 - fixedPct;
+        const varShareInput = document.getElementById('variableShare');
+        if (varShareInput) varShareInput.value = variablePct;
+
+        const fixed = capital * fixedPct / 100;
+        const variable = capital * variablePct / 100;
+        const chargeRate = Math.max(0, getNumber('salesCharge')) / 100;
+        const charge = variable * chargeRate;
+        const netVariable = variable - charge;
+
+        const fixedRate = Math.max(0, getNumber('fixedRate')) / 100;
+        const variableRate = Math.max(0, getNumber('variableRate')) / 100;
+        const bonusRate = Math.max(0, getNumber('campaignBonus')) / 100;
+
+        const base = (fixed * fixedRate) + (netVariable * variableRate);
+        const bonus = fixed * bonusRate;
+        const total = base + bonus;
+
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+        setVal('fixedAllocationRM', formatRM(fixed));
+        const fixedAllocPctEl = document.getElementById('fixedAllocationPct');
+        if (fixedAllocPctEl) fixedAllocPctEl.textContent = fixedPct + '%';
+
+        setVal('variableAllocationRM', formatRM(variable));
+        const varAllocPctEl = document.getElementById('variableAllocationPct');
+        if (varAllocPctEl) varAllocPctEl.textContent = variablePct + '%';
+
+        setVal('salesChargeRM', formatRM(charge));
+        setVal('netHybridCapital', formatRM(fixed + netVariable));
+        setVal('hybridBaseReturn', formatRM(base));
+        setVal('hybridBonusReturn', formatRM(bonus));
+        setVal('hybridTotalReturn', formatRM(total));
+        setVal('hybridEndingValue', formatRM(fixed + netVariable + total));
+
+        const lockText = document.getElementById('hybridLockText');
+        if (lockText) lockText.textContent = 'Package: ASB Plus · Entered lock-in period: ' + getNumber('lockPeriod') + ' years. Check the official lock-in terms.';
+
+        const rowsEl = document.getElementById('allocationRows');
+        if (rowsEl) {
+            rowsEl.innerHTML = `<tr><td>Fixed Price</td><td>ASB / ASM</td><td>${fixedPct}%</td><td>${formatRM(fixed)}</td></tr><tr><td>Variable Price</td><td>ASN Imbang 2 / ASN Equity 5</td><td>${variablePct}%</td><td>${formatRM(variable)}</td></tr>`;
+        }
+
+        const canvas = document.getElementById('hybridChart');
+        if (canvas && window.Chart) {
+            if (window.hybridChartInstance) window.hybridChartInstance.destroy();
+            window.hybridChartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: ['Fixed Price', 'Variable Price'], datasets: [{ data: [fixed, variable] }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+    }
+    if (calcHybridBtn) calcHybridBtn.addEventListener('click', calcHybrid);
+    ['hybridCapital','fixedShare','fixedRate','variableRate','campaignBonus','lockPeriod','salesCharge'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', calcHybrid);
+        if (el && el.tagName === 'SELECT') el.addEventListener('change', calcHybrid);
+    });
+    calcHybrid();
+
+    // COVR Plan
+    const covrPlan = document.getElementById('covrPlan');
+    if (covrPlan) {
+        covrPlan.addEventListener('change', function() {
+            const v = Number(this.value) || 40;
+            const m = document.getElementById('covrMonthly');
+            const a = document.getElementById('covrAnnual');
+            if (m) m.textContent = formatRM(v);
+            if (a) a.textContent = formatRM(v * 12);
+        });
+        covrPlan.dispatchEvent(new Event('change'));
+    }
+    ['covrSpouse','covrChild1','covrChild2','covrChild3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => {
+            const total = ['covrSpouse','covrChild1','covrChild2','covrChild3'].reduce((s, i) => s + Math.max(0, getNumber(i)), 0);
+            const totEl = document.getElementById('covrFamilyTotal');
+            if (totEl) totEl.textContent = formatRM(total);
+        });
+    });
+
+    // Legacy status
+    const legacyStatus = document.getElementById('legacyStatus');
+    if (legacyStatus) {
+        legacyStatus.addEventListener('change', function() {
+            const labels = { none: 'Not registered / not declared', hibah: 'ASNB Hibah Amanah', trust: 'ASNB Trust Declaration', will: 'Will / other planning' };
+            const lt = document.getElementById('legacyStatusText');
+            if (lt) lt.textContent = labels[this.value] || '';
+        });
+    }
+    ['estateBalance','feeThreshold','feeFirstRate','feeRemainderRate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => {
+            const bal = Math.max(0, getNumber('estateBalance'));
+            const limit = Math.max(0, getNumber('feeThreshold', 25000));
+            const r1 = Math.max(0, getNumber('feeFirstRate')) / 100;
+            const r2 = Math.max(0, getNumber('feeRemainderRate')) / 100;
+            const first = Math.min(bal, limit) * r1;
+            const rest = Math.max(0, bal - limit) * r2;
+            const total = first + rest;
+            const setVal = (i, v) => { const e = document.getElementById(i); if (e) e.innerText = formatRM(v); };
+            setVal('feeFirst', first);
+            setVal('feeRemainder', rest);
+            setVal('feeTotal', total);
+            setVal('estateAfterFee', Math.max(0, bal - total));
+        });
+    });
+    // Trigger initial fee calc
+    const estBal = document.getElementById('estateBalance');
+    if (estBal) estBal.dispatchEvent(new Event('input'));
+
+    // FPSP Calculator
+    function calculateFPSP() {
+        const goalName = document.getElementById('fpspGoalType')?.value || 'Financial Goal';
+        const targetGoal = Math.max(0, parseFloat(document.getElementById('fpspTargetGoal')?.value) || 0);
+        const initCapital = Math.max(0, parseFloat(document.getElementById('fpspCapital')?.value) || 0);
+        const monthlyTopup = Math.max(0, parseFloat(document.getElementById('fpspMonthlyTopup')?.value) || 0);
+        const years = Math.max(1, Math.floor(parseFloat(document.getElementById('fpspHorizon')?.value) || 10));
+
+        const fixedPct = Math.min(100, Math.max(0, parseFloat(document.getElementById('fpspFixedPct')?.value) || 0)) / 100;
+        const varPct = 1 - fixedPct;
+        const fixedRate = (parseFloat(document.getElementById('fpspFixedRate')?.value) || 0) / 100;
+        const varRate = (parseFloat(document.getElementById('fpspVariableRate')?.value) || 0) / 100;
+        const salesCharge = Math.max(0, parseFloat(document.getElementById('fpspSalesCharge')?.value) || 0) / 100;
+
+        let fixedBal = initCapital * fixedPct;
+        let varGrossInit = initCapital * varPct;
+        let totalCharges = varGrossInit * salesCharge;
+        let varBal = varGrossInit - totalCharges;
+        let totalPrincipal = initCapital;
+
+        const labels = ['Start'];
+        const principalSeries = [initCapital];
+        const valueSeries = [fixedBal + varBal];
+        const targetSeries = [targetGoal];
+
+        for (let y = 1; y <= years; y++) {
+            for (let m = 1; m <= 12; m++) {
+                const mFixed = monthlyTopup * fixedPct;
+                const mVarGross = monthlyTopup * varPct;
+                const mCharge = mVarGross * salesCharge;
+                const mVarNet = mVarGross - mCharge;
+
+                totalPrincipal += monthlyTopup;
+                totalCharges += mCharge;
+                fixedBal = (fixedBal + mFixed) * (1 + fixedRate / 12);
+                varBal = (varBal + mVarNet) * (1 + varRate / 12);
+            }
+            labels.push('Year ' + y);
+            principalSeries.push(totalPrincipal);
+            valueSeries.push(fixedBal + varBal);
+            targetSeries.push(targetGoal);
+        }
+
+        const endingVal = fixedBal + varBal;
+        const netGain = endingVal - totalPrincipal;
+        const gap = endingVal - targetGoal;
+
+        const fmt = x => 'RM ' + x.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+        setVal('fpspGoalLabel', goalName);
+        setVal('fpspTotalPrincipal', fmt(totalPrincipal));
+        setVal('fpspCharge', fmt(totalCharges));
+        setVal('fpspEnding', fmt(endingVal));
+        setVal('fpspReturn', fmt(netGain));
+
+        const gapEl = document.getElementById('fpspGoalGap');
+        const statusBox = document.getElementById('fpspGoalStatusBox');
+        const statusText = document.getElementById('fpspGoalStatusText');
+
+        if (gap >= 0) {
+            if (gapEl) gapEl.textContent = '+' + fmt(gap);
+            if (statusBox) statusBox.className = 'result-box profit';
+            if (statusText) statusText.textContent = 'Target Met! (' + fmt(targetGoal) + ')';
+        } else {
+            if (gapEl) gapEl.textContent = '-' + fmt(Math.abs(gap));
+            if (statusBox) statusBox.className = 'result-box warning';
+            if (statusText) statusText.textContent = 'Shortfall vs Target (' + fmt(targetGoal) + ')';
+        }
+
+        const canvas = document.getElementById('fpspChart');
+        if (canvas && window.Chart) {
+            if (window.fpspChartInstance) window.fpspChartInstance.destroy();
+            window.fpspChartInstance = new Chart(canvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [
+                        { label: 'Projected Portfolio Value', data: valueSeries, borderColor: '#0e8b83', backgroundColor: 'rgba(14, 139, 131, 0.12)', borderWidth: 3, fill: true, tension: 0.25 },
+                        { label: 'Total Principal Contributed', data: principalSeries, borderColor: '#64748b', borderDash: [5, 5], borderWidth: 2, fill: false },
+                        { label: 'Target Goal (' + fmt(targetGoal) + ')', data: targetSeries, borderColor: '#f59e0b', borderWidth: 2, pointRadius: 0, fill: false }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: v => 'RM ' + Number(v).toLocaleString() } } } }
+            });
+        }
+    }
+    const calcFPSPBtn = document.getElementById('calculateFPSP');
+    if (calcFPSPBtn) calcFPSPBtn.addEventListener('click', calculateFPSP);
+    ['fpspGoalType', 'fpspTargetGoal', 'fpspCapital', 'fpspMonthlyTopup', 'fpspHorizon', 'fpspFixedPct', 'fpspFixedRate', 'fpspVariableRate', 'fpspSalesCharge'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', calculateFPSP);
+            el.addEventListener('change', calculateFPSP);
+        }
+    });
+    calculateFPSP();
+
+    // Campaigns ticker
+    const asnbCampaigns = [
+        { tag: 'FEATURED CAMPAIGN', title: 'ASB Plus Investment Package', text: 'Explore a combination of fixed-price and variable-price funds, with package features and terms published by ASNB.', url: 'https://www.asnb.com.my/campaign/asb-plus-investment-package', link: 'View ASB Plus details' },
+        { tag: 'FPSP 2026', title: 'Financial Planning Solution Package', text: 'Explore ASNB’s 2026 package combining selected fixed-price and variable-price funds.', url: 'https://www.asnb.com.my/campaign/fpsp-2026/', link: 'View FPSP 2026 details' },
+        { tag: 'PROTECTION', title: 'ASNB COVR Hidupmu', text: 'Learn about ASNB COVR protection options and the current campaign information.', url: 'https://www.asnb.com.my/campaign/', link: 'View ASNB campaign details' },
+        { tag: 'INVESTMENT UPDATE', title: 'Unlock ASM – First ASM Investment Special', text: 'ASNB lists a first-investment special for eligible investors.', url: 'https://www.asnb.com.my/campaign/unlock-asm', link: 'View ASM campaign details' }
+    ];
+    let asnbCampaignIndex = 0;
+    function showAsnbCampaign(i) {
+        asnbCampaignIndex = (i + asnbCampaigns.length) % asnbCampaigns.length;
+        const a = asnbCampaigns[asnbCampaignIndex];
+        const tag = document.getElementById('asnbAdTag');
+        const title = document.getElementById('asnbAdTitle');
+        const text = document.getElementById('asnbAdText');
+        const link = document.getElementById('asnbAdLink');
+        if (tag) tag.textContent = a.tag;
+        if (title) title.textContent = a.title;
+        if (text) text.textContent = a.text;
+        if (link) { link.href = a.url; link.textContent = a.link + ' →'; }
+    }
+    const prevBtn = document.getElementById('asnbAdPrev');
+    const nextBtn = document.getElementById('asnbAdNext');
+    if (prevBtn) prevBtn.addEventListener('click', () => showAsnbCampaign(asnbCampaignIndex - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => showAsnbCampaign(asnbCampaignIndex + 1));
+    setInterval(() => showAsnbCampaign(asnbCampaignIndex + 1), 8000);
+};
+</script>
+</body>
+</html>
