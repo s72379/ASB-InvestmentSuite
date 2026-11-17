@@ -619,73 +619,241 @@ body{padding:0;background:#f3f6fa}.app-shell{display:flex;min-height:100vh}
 
 <!-- 6. ASNB COVR HIDUPMU -->
 <section class="module-panel" id="module-covr">
-<div class="module-heading"><h1>ASNB COVR Hidupmu</h1><p>Select a contribution tier and enter the official benefit values from the product disclosure.</p></div>
+<div class="module-heading">
+  <h1>ASNB COVR Hidupmu</h1>
+  <p>Explore the monthly contribution, investment allocation and takaful protection provided under each ASNB COVR plan.</p>
+</div>
+
 <div class="card">
-<h2>Takaful Plan Calculator</h2>
-<div class="form-grid">
-<div class="input-group"><label for="covrPlan">Select ASNB COVR Plan</label><select id="covrPlan"><option value="40">ASNB COVR 40 — RM40/month</option><option value="60">ASNB COVR 60 — RM60/month</option><option value="80">ASNB COVR 80 — RM80/month</option><option value="100">ASNB COVR 100 — RM100/month</option><option value="120">ASNB COVR 120 — RM120/month</option><option value="140">ASNB COVR 140 — RM140/month</option><option value="160">ASNB COVR 160 — RM160/month</option><option value="180">ASNB COVR 180 — RM180/month</option><option value="200">ASNB COVR 200 — RM200/month</option></select></div>
+  <h2>1. Select Your COVR Plan</h2>
+  <div class="form-grid">
+    <div class="input-group">
+      <label for="covrPlan">Select ASNB COVR Plan</label>
+      <select id="covrPlan">
+        <option value="40">COVR 40 — RM40/month</option>
+        <option value="80">COVR 80 — RM80/month</option>
+        <option value="120">COVR 120 — RM120/month</option>
+        <option value="160">COVR 160 — RM160/month</option>
+        <option value="200">COVR 200 — RM200/month</option>
+      </select>
+    </div>
+  </div>
+  <div class="results-grid">
+    <div class="result-box"><h3>Total Monthly Contribution</h3><div class="value" id="covrMonthly">RM 40.00</div></div>
+    <div class="result-box"><h3>Total Annual Contribution</h3><div class="value" id="covrAnnual">RM 480.00</div></div>
+  </div>
 </div>
-<div class="results-grid">
-<div class="result-box"><h3>Monthly Contribution</h3><div class="value" id="covrMonthly">RM40.00</div></div>
-<div class="result-box"><h3>Estimated Annual Contribution</h3><div class="value" id="covrAnnual">RM480.00</div></div>
-</div>
-<p class="hint">Benefit amounts are not pre-filled with assumptions. Enter the exact figures from the official benefit schedule / takaful certificate.</p>
-</div>
+
 <div class="card">
-<h2>Protection Matrix — Adult &amp; Minor</h2>
-<div class="scrollable-table" style="max-height:none">
-<table class="asnb-table">
-<thead><tr><th>Benefit</th><th>Adult (RM)</th><th>Minor (RM)</th></tr></thead>
-<tbody>
-<tr><td>Death / TPD — Natural Causes</td><td><input class="covr-benefit" data-key="adultNatural" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorNatural" min="0" placeholder="Enter RM" type="number"/></td></tr>
-<tr><td>Death / TPD — Accidental Causes</td><td><input class="covr-benefit" data-key="adultAccident" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorAccident" min="0" placeholder="Enter RM" type="number"/></td></tr>
-<tr><td>Critical Illness</td><td><input class="covr-benefit" data-key="adultCritical" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorCritical" min="0" placeholder="Enter RM" type="number"/></td></tr>
-<tr><td>Bereavement / Funeral Expense</td><td><input class="covr-benefit" data-key="adultFuneral" min="0" placeholder="Enter RM" type="number"/></td><td><input class="covr-benefit" data-key="minorFuneral" min="0" placeholder="Enter RM" type="number"/></td></tr>
-</tbody>
-</table>
+  <h2>2. Monthly Contribution Allocation</h2>
+  <p class="hint">ASNB COVR combines investment and family takaful protection. The monthly plan contribution is allocated 75% to investment and 25% to takaful, based on the published product information.</p>
+  <div class="results-grid">
+    <div class="result-box profit"><h3>Investment Portion (75%) — Monthly</h3><div class="value" id="covrInvestmentMonthly">RM 30.00</div></div>
+    <div class="result-box warning"><h3>Takaful Portion (25%) — Monthly</h3><div class="value" id="covrTakafulMonthly">RM 10.00</div></div>
+    <div class="result-box profit"><h3>Investment Portion (75%) — Annual</h3><div class="value" id="covrInvestmentAnnual">RM 360.00</div></div>
+    <div class="result-box warning"><h3>Takaful Portion (25%) — Annual</h3><div class="value" id="covrTakafulAnnual">RM 120.00</div></div>
+  </div>
+  <p class="hint">These figures show the allocation of the plan contribution, not a guaranteed investment return. The value of variable-price fund investments may rise or fall. Takaful contribution rates may also be reviewed under the product terms.</p>
 </div>
-<h3 class="subheading">Additional Family Coverage</h3>
-<div class="form-grid">
-<div class="input-group"><label for="covrSpouse">Spouse (RM)</label><input id="covrSpouse" min="0" placeholder="Enter official amount" type="number"/></div>
-<div class="input-group"><label for="covrChild1">Child 1 (RM)</label><input id="covrChild1" min="0" placeholder="Enter official amount" type="number"/></div>
-<div class="input-group"><label for="covrChild2">Child 2 (RM)</label><input id="covrChild2" min="0" placeholder="Enter official amount" type="number"/></div>
-<div class="input-group"><label for="covrChild3">Child 3 (RM)</label><input id="covrChild3" min="0" placeholder="Enter official amount" type="number"/></div>
+
+<div class="card">
+  <h2>3. Takaful Protection Benefits</h2>
+  <p class="hint">The benefit amounts below are automatically displayed according to the selected plan. Select whether the covered ASNB account is an Adult or Minor account to highlight the applicable benefit schedule.</p>
+  <div class="form-grid">
+    <div class="input-group">
+      <label for="covrCoveredType">Covered Account Type</label>
+      <select id="covrCoveredType">
+        <option value="adult">Adult</option>
+        <option value="minor">Minor</option>
+      </select>
+    </div>
+  </div>
+  <div class="scrollable-table" style="max-height:none">
+    <table class="asnb-table">
+      <thead><tr><th>Protection Benefit</th><th>Selected Covered Person</th><th>Other Account Type</th></tr></thead>
+      <tbody>
+        <tr><td>Death / Total &amp; Permanent Disability (TPD) — Natural Causes</td><td id="covrNaturalSelected">RM 30,000.00</td><td id="covrNaturalOther">RM 50,000.00</td></tr>
+        <tr><td>Death / TPD — Accidental Causes</td><td id="covrAccidentSelected">RM 60,000.00</td><td id="covrAccidentOther">RM 100,000.00</td></tr>
+        <tr><td>Critical Illness (CI) — Accelerated Benefit</td><td id="covrCriticalSelected">RM 15,000.00</td><td id="covrCriticalOther">RM 50,000.00</td></tr>
+        <tr><td>Immediate Death Expense (IDE) — Person Covered</td><td id="covrIdeSelected">RM 3,000.00</td><td id="covrIdeOther">RM 5,000.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint" id="covrBenefitNote">The selected benefit schedule is based on the published COVR Product Disclosure Sheet. All claims remain subject to the takaful certificate terms, conditions and exclusions.</p>
 </div>
-<div class="result-box"><h3>Total Recorded Family Coverage</h3><div class="value" id="covrFamilyTotal">RM 0.00</div></div>
+
+<div class="card">
+  <h2>4. Additional Family Immediate Death Expense (IDE)</h2>
+  <div class="results-grid">
+    <div class="result-box"><h3>Spouse</h3><div class="value" id="covrSpouseBenefit">RM 2,500.00</div><p class="hint">Adult account coverage only</p></div>
+    <div class="result-box"><h3>Children</h3><div class="value" id="covrChildrenBenefit">RM 1,000.00 each</div><p class="hint">Up to 3 children; adult account coverage only</p></div>
+  </div>
+  <p class="hint">These are separate IDE benefits, not a combined family coverage balance. The published schedule lists RM2,500 for a spouse and RM1,000 for each of up to three children. These family IDE benefits are not shown as payable for a Minor account.</p>
+</div>
+
+<div class="card">
+  <h2>5. Important Eligibility &amp; Waiting Period Information</h2>
+  <div class="scrollable-table" style="max-height:none">
+    <table class="asnb-table">
+      <thead><tr><th>Item</th><th>Published Information</th></tr></thead>
+      <tbody>
+        <tr><td>Adult entry age</td><td>18–69 years</td></tr>
+        <tr><td>Minor entry age</td><td>30 days–17 years</td></tr>
+        <tr><td>Critical illness waiting period</td><td>60 days for specified conditions; 30 days for other sickness-related conditions</td></tr>
+        <tr><td>TPD waiting period</td><td>6 months</td></tr>
+        <tr><td>Medical examination</td><td>No medical or health assessment is required at enrolment, according to ASNB product information</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="hint">The 60-day critical illness waiting period applies to specified conditions listed in the Product Disclosure Sheet, including cancer, heart attack, coronary artery bypass surgery, serious coronary artery disease, and angioplasty/invasive coronary artery treatment. This summary is not a substitute for the full takaful certificate.</p>
+  <p class="hint">Educational illustration only. Confirm the latest plan details, eligibility, benefit schedule and certificate wording with ASNB / Takaful Ikhlas before subscribing or making a claim.</p>
+  <p><a href="https://www.asnb.com.my/campaign/asnb-covr" target="_blank" rel="noopener">View official ASNB COVR information</a> · <a href="https://www.asnb.com.my/img/covr/helaian%20produk/IKHLAS%20IDAMAN%20%2887%29_PDS%20v10.6%20%28ENG%29_ASNB%20%28clean%29.pdf" target="_blank" rel="noopener">View Takaful Product Disclosure Sheet (PDF)</a></p>
 </div>
 </section>
 
 <!-- 7. TRUST & WILL PLANNING -->
 <section class="module-panel" id="module-legacy">
-<div class="module-heading"><h1>Trust &amp; Will Planning</h1><p>Review beneficiary-planning status, indicative settlement timelines and estimated fees.</p></div>
+<div class="module-heading"><h1>Trust &amp; Will Planning</h1><p>Explore ASNB estate-planning options, eligibility, indicative claim timelines and estimated fees.</p></div>
+
 <div class="card">
-<h2>Beneficiary Status Management</h2>
+<h2>1. Estate Planning Overview</h2>
+<p>Estate planning helps a unit holder specify how eligible ASNB investments should be transferred or administered after death. ASNB provides Hibah Amanah and Trust Declaration services. A conventional will and estate administration follow a different legal process.</p>
 <div class="form-grid">
-<div class="input-group"><label for="legacyStatus">Planning / Registration Status</label><select id="legacyStatus"><option value="none">Not registered / not declared</option><option value="hibah">ASNB Hibah Amanah</option><option value="trust">ASNB Trust Declaration</option><option value="will">Will / other planning</option></select></div>
-<div class="input-group"><label for="estateBalance">Investment Balance (RM)</label><input id="estateBalance" min="0" type="number" value="50000"/></div>
+  <div class="input-group">
+    <label for="legacyStatus">Current Planning / Registration Status</label>
+    <select id="legacyStatus">
+      <option value="none">No ASNB estate-planning registration</option>
+      <option value="hibah">ASNB Hibah Amanah</option>
+      <option value="trust">ASNB Trust Declaration</option>
+      <option value="will">Conventional Will</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label for="estateBalance">ASNB Investment Balance (RM)</label>
+    <input id="estateBalance" type="number" min="0" step="0.01" value="50000" />
+  </div>
 </div>
-<div class="result-box"><h3>Current Status</h3><div class="value" id="legacyStatusText">Not registered / not declared</div></div>
+<div class="result-box"><h3>Selected Planning Status</h3><div class="value" id="legacyStatusText">No ASNB estate-planning registration</div><p class="hint" id="legacyStatusNote">This is an educational comparison and does not determine legal eligibility.</p></div>
 </div>
+
 <div class="card">
-<h2>Claim Settlement Timeline Simulation</h2>
+<h2>2. Estate Planning Method Comparison</h2>
+<div class="scrollable-table">
+<table class="asnb-table">
+<thead><tr><th>Method</th><th>Who it is intended for</th><th>How ASNB investments are handled</th><th>Important note</th></tr></thead>
+<tbody>
+<tr><td><strong>Hibah Amanah</strong></td><td>Eligible Muslim Malaysian ASNB unit holders aged 18 and above.</td><td>Registered ASNB units are distributed to the named Hibah Donees after the donor's death according to the Hibah Deed.</td><td>Minimum 1,000 eligible units in each registered fund must be maintained; up to 10 donees.</td></tr>
+<tr><td><strong>Trust Declaration</strong></td><td>Eligible non-Muslim Malaysian ASNB unit holders aged 18 and above.</td><td>ASNB manages the trust asset and distributes registered units to named Donees after the donor's death according to the Trust Deed.</td><td>Minimum 1,000 eligible units in each registered fund must be maintained; up to 10 donees.</td></tr>
+<tr><td><strong>Conventional Will</strong></td><td>People who want to set out instructions for their estate under applicable law.</td><td>ASNB's illustrative process describes a Grant of Probate and payment of the ASNB units to the executor, who administers the estate.</td><td>A will does not automatically bypass probate or other estate-administration requirements.</td></tr>
+<tr><td><strong>No estate-planning document</strong></td><td>Unit holders who have not made an estate-planning arrangement.</td><td>Beneficiaries / heirs may need to obtain the relevant estate-administration authority before claiming.</td><td>Process and distribution depend on the applicable law and the circumstances of the estate.</td></tr>
+</tbody>
+</table>
+</div>
+<p class="hint">Hibah Amanah and Trust Declaration are ASNB services with different donor eligibility requirements. This dashboard does not decide which arrangement is legally suitable for an individual.</p>
+</div>
+
+<div class="card">
+<h2>3. Eligibility &amp; Important Conditions</h2>
 <div class="two-column">
-<div class="result-box profit"><h3>With ASNB Hibah Amanah</h3><div class="value">21 days</div><p class="hint">Illustrative timeline only.</p></div>
-<div class="result-box warning"><h3>Without Estate Planning</h3><div class="value">1–3 years</div><p class="hint">Illustrative estimate only.</p></div>
+  <div class="result-box">
+    <h3>ASNB Hibah Amanah</h3>
+    <ul>
+      <li>Muslim Malaysian ASNB unit holder, age 18 or above.</li>
+      <li>Minimum 1,000 units in each registered fund, excluding units under financing, collateral or EPF Members Investment Scheme.</li>
+      <li>The 1,000-unit minimum must be maintained in each registered fund during the Hibah Amanah period.</li>
+      <li>Up to 10 individual Hibah Donees.</li>
+      <li>A legal guardian must be appointed for a Donee below 18 years old.</li>
+      <li>100% of the wholly-owned units in each registered fund must be allocated among the named Donees.</li>
+    </ul>
+  </div>
+  <div class="result-box">
+    <h3>ASNB Trust Declaration</h3>
+    <ul>
+      <li>Non-Muslim Malaysian ASNB unit holder, age 18 or above.</li>
+      <li>Applicant must not be bankrupt and must be of sound mind.</li>
+      <li>Minimum 1,000 units in each registered fund, excluding units under financing, collateral or EPF Members Investment Scheme.</li>
+      <li>The 1,000-unit minimum must be maintained in each registered fund during the Trust Declaration period.</li>
+      <li>Up to 10 individual Donees; Donees may be Malaysian or non-Malaysian and of any religion.</li>
+      <li>A legal guardian must be appointed for a Donee below 18 years old.</li>
+    </ul>
+  </div>
 </div>
+<p class="hint">The eligibility summaries above reflect ASNB's published information. Fund eligibility, ownership, financing / collateral arrangements, documentation and other deed conditions still apply. A conventional will has separate legal requirements; seek qualified legal advice for advice on your circumstances.</p>
 </div>
+
 <div class="card">
-<h2>Estimated Administration &amp; Claim Fee Calculator</h2>
+<h2>4. Claim Settlement Timeline Comparison</h2>
+<div class="results-grid">
+  <div class="result-box profit"><h3>Hibah Amanah / Trust Declaration</h3><div class="value">21 days</div><p class="hint">ASNB's published comparison: transfer of units only.</p></div>
+  <div class="result-box"><h3>Conventional Will</h3><div class="value">18 months</div><p class="hint">ASNB's illustrative comparison, including probate and claim steps.</p></div>
+  <div class="result-box warning"><h3>Without Estate Planning</h3><div class="value">3 years</div><p class="hint">ASNB's illustrative comparison for estate administration.</p></div>
+</div>
+<p class="hint">These are indicative comparisons published by ASNB, not guaranteed processing times. Actual duration depends on documentation, estate complexity, court / authority processes and other circumstances. The 21-day figure is specifically stated for transfer of units only.</p>
+</div>
+
+<div class="card">
+<h2>5. ASNB Estate-Planning Claim Fee Calculator</h2>
+<p>Estimate the progressive claim fee for Hibah Amanah or Trust Declaration using ASNB's published fee tiers. The applicable rate is the prevailing rate when the claim is paid.</p>
+<div class="scrollable-table">
+<table class="asnb-table">
+<thead><tr><th>Investment balance portion</th><th>Rate</th><th>Calculated fee</th></tr></thead>
+<tbody>
+<tr><td>First RM25,000</td><td>1.50%</td><td id="legacyTier1">RM 0.00</td></tr>
+<tr><td>Next RM225,000</td><td>1.00%</td><td id="legacyTier2">RM 0.00</td></tr>
+<tr><td>Next RM250,000</td><td>0.50%</td><td id="legacyTier3">RM 0.00</td></tr>
+<tr><td>Next RM500,000</td><td>0.25%</td><td id="legacyTier4">RM 0.00</td></tr>
+<tr><td>Remaining balance</td><td>0.10%</td><td id="legacyTier5">RM 0.00</td></tr>
+</tbody>
+</table>
+</div>
 <div class="form-grid">
-<div class="input-group"><label for="feeFirstRate">Rate for First RM25,000 (%)</label><input id="feeFirstRate" step=".01" type="number" value="1.5"/></div>
-<div class="input-group"><label for="feeRemainderRate">Rate for Remaining Balance (%)</label><input id="feeRemainderRate" step=".01" type="number" value="0.10"/></div>
-<div class="input-group"><label for="feeThreshold">First Tier Threshold (RM)</label><input id="feeThreshold" type="number" value="25000"/></div>
+  <div class="input-group"><label for="legacySST">Include 8% SST in estimate?</label><select id="legacySST"><option value="no">No — show fee before SST</option><option value="yes">Yes — illustrative 8% SST</option></select></div>
 </div>
 <div class="results-grid">
-<div class="result-box"><h3>First Tier Fee</h3><div class="value" id="feeFirst">RM 0.00</div></div>
-<div class="result-box"><h3>Remaining Balance Fee</h3><div class="value" id="feeRemainder">RM 0.00</div></div>
-<div class="result-box warning"><h3>Estimated Total Fee</h3><div class="value" id="feeTotal">RM 0.00</div></div>
-<div class="result-box"><h3>Estimated Net Balance After Fees</h3><div class="value" id="estateAfterFee">RM 0.00</div></div>
+  <div class="result-box"><h3>Progressive Claim Fee</h3><div class="value" id="legacyClaimFee">RM 0.00</div></div>
+  <div class="result-box"><h3>Illustrative SST</h3><div class="value" id="legacySSTAmount">RM 0.00</div></div>
+  <div class="result-box warning"><h3>Estimated Claim Fee Total</h3><div class="value" id="legacyFeeTotal">RM 0.00</div></div>
+  <div class="result-box profit"><h3>Estimated Balance After Claim Fee</h3><div class="value" id="legacyNetBalance">RM 0.00</div></div>
 </div>
+<div class="result-box">
+  <h3>Other published ASNB service fees</h3>
+  <div class="results-grid">
+    <div><strong>Registration</strong><div class="value">RM180</div></div>
+    <div><strong>Additional registration</strong><div class="value">RM90</div></div>
+    <div><strong>Revocation</strong><div class="value">RM70</div></div>
+    <div><strong>Change of Donee / guardian / fund</strong><div class="value">RM20</div></div>
+    <div><strong>Annual administration</strong><div class="value">RM10</div></div>
+  </div>
+  <p class="hint">These are separate service fees and are not automatically deducted in the claim-fee calculation above. 8% SST applies to relevant fee charges where applicable. Confirm the current fee schedule with ASNB.</p>
+</div>
+<p class="hint">This calculator estimates ASNB's Hibah Amanah / Trust Declaration claim fee only. It is not a general probate, lawyer, executor or total-estate administration fee calculator. The estimate excludes other charges and transaction effects.</p>
+</div>
+
+<div class="card">
+<h2>6. Beneficiary Distribution Simulator</h2>
+<p>Illustrate how an ASNB fund balance could be divided among three example beneficiaries. The percentages must total 100% for the illustration to be valid.</p>
+<div class="form-grid">
+  <div class="input-group"><label for="legacyBeneficiary1">Beneficiary A — allocation (%)</label><input id="legacyBeneficiary1" type="number" min="0" max="100" step="0.1" value="50" /></div>
+  <div class="input-group"><label for="legacyBeneficiary2">Beneficiary B — allocation (%)</label><input id="legacyBeneficiary2" type="number" min="0" max="100" step="0.1" value="30" /></div>
+  <div class="input-group"><label for="legacyBeneficiary3">Beneficiary C — allocation (%)</label><input id="legacyBeneficiary3" type="number" min="0" max="100" step="0.1" value="20" /></div>
+</div>
+<div class="results-grid">
+  <div class="result-box"><h3>Beneficiary A</h3><div class="value" id="legacyShare1">RM 0.00</div><p class="hint" id="legacySharePct1">50.0%</p></div>
+  <div class="result-box"><h3>Beneficiary B</h3><div class="value" id="legacyShare2">RM 0.00</div><p class="hint" id="legacySharePct2">30.0%</p></div>
+  <div class="result-box"><h3>Beneficiary C</h3><div class="value" id="legacyShare3">RM 0.00</div><p class="hint" id="legacySharePct3">20.0%</p></div>
+  <div class="result-box"><h3>Total Allocation</h3><div class="value" id="legacyAllocationTotal">100.0%</div><p class="hint" id="legacyAllocationStatus">Valid illustration</p></div>
+</div>
+<p class="hint">This is a mathematical illustration, not a legal recommendation or a will-writing tool. ASNB requires the full registered fund balance to be allocated among the named Donees under its deed. Actual distribution must follow the signed deed, applicable terms and relevant law. For a conventional will or wider estate, obtain qualified legal advice.</p>
+</div>
+
+<div class="card">
+<h2>7. Official References &amp; Disclaimer</h2>
+<ul>
+  <li><a href="https://www.asnb.com.my/hibah-amanah" target="_blank" rel="noopener">ASNB Hibah Amanah — eligibility, process and fees</a></li>
+  <li><a href="https://www.asnb.com.my/pengisytiharan-amanah" target="_blank" rel="noopener">ASNB Trust Declaration — eligibility, process and fees</a></li>
+  <li><a href="https://www.asnb.com.my/fee-and-charge/" target="_blank" rel="noopener">ASNB Fee &amp; Charges</a></li>
+</ul>
+<p class="hint">Educational use only. Information and fee rates may change. Always verify the latest ASNB terms, deed, fee schedule and applicable law before making an estate-planning decision. This dashboard does not provide legal, tax, Shariah or financial advice.</p>
 </div>
 </section>
 
@@ -1093,56 +1261,146 @@ window.onload = function () {
     });
     calcHybrid();
 
-    // COVR Plan
+    // COVR plan, contribution allocation and official benefit schedule
     const covrPlan = document.getElementById('covrPlan');
-    if (covrPlan) {
-        covrPlan.addEventListener('change', function() {
-            const v = Number(this.value) || 40;
-            const m = document.getElementById('covrMonthly');
-            const a = document.getElementById('covrAnnual');
-            if (m) m.textContent = formatRM(v);
-            if (a) a.textContent = formatRM(v * 12);
-        });
-        covrPlan.dispatchEvent(new Event('change'));
-    }
-    ['covrSpouse','covrChild1','covrChild2','covrChild3'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', () => {
-            const total = ['covrSpouse','covrChild1','covrChild2','covrChild3'].reduce((s, i) => s + Math.max(0, getNumber(i)), 0);
-            const totEl = document.getElementById('covrFamilyTotal');
-            if (totEl) totEl.textContent = formatRM(total);
-        });
-    });
+    const covrCoveredType = document.getElementById('covrCoveredType');
+    const covrBenefitSchedule = {
+        40:  { adult: { natural: 30000, accident: 60000, critical: 15000, ide: 3000 }, minor: { natural: 50000, accident: 100000, critical: 50000, ide: 5000 } },
+        80:  { adult: { natural: 60000, accident: 120000, critical: 30000, ide: 3000 }, minor: { natural: 100000, accident: 200000, critical: 100000, ide: 5000 } },
+        120: { adult: { natural: 90000, accident: 180000, critical: 45000, ide: 3000 }, minor: { natural: 150000, accident: 300000, critical: 150000, ide: 5000 } },
+        160: { adult: { natural: 120000, accident: 240000, critical: 60000, ide: 3000 }, minor: { natural: 200000, accident: 400000, critical: 200000, ide: 5000 } },
+        200: { adult: { natural: 150000, accident: 300000, critical: 75000, ide: 3000 }, minor: { natural: 250000, accident: 500000, critical: 250000, ide: 5000 } }
+    };
 
-    // Legacy status
-    const legacyStatus = document.getElementById('legacyStatus');
-    if (legacyStatus) {
-        legacyStatus.addEventListener('change', function() {
-            const labels = { none: 'Not registered / not declared', hibah: 'ASNB Hibah Amanah', trust: 'ASNB Trust Declaration', will: 'Will / other planning' };
-            const lt = document.getElementById('legacyStatusText');
-            if (lt) lt.textContent = labels[this.value] || '';
-        });
+    function updateCOVRCalculator() {
+        if (!covrPlan) return;
+        const monthly = Math.max(0, Number(covrPlan.value) || 40);
+        const annual = monthly * 12;
+        const investmentMonthly = monthly * 0.75;
+        const takafulMonthly = monthly * 0.25;
+        const coveredType = covrCoveredType && covrCoveredType.value === 'minor' ? 'minor' : 'adult';
+        const otherType = coveredType === 'adult' ? 'minor' : 'adult';
+        const selected = covrBenefitSchedule[monthly] || covrBenefitSchedule[40];
+        const selectedBenefits = selected[coveredType];
+        const otherBenefits = selected[otherType];
+
+        const setCOVRText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        };
+
+        setCOVRText('covrMonthly', formatRM(monthly));
+        setCOVRText('covrAnnual', formatRM(annual));
+        setCOVRText('covrInvestmentMonthly', formatRM(investmentMonthly));
+        setCOVRText('covrTakafulMonthly', formatRM(takafulMonthly));
+        setCOVRText('covrInvestmentAnnual', formatRM(investmentMonthly * 12));
+        setCOVRText('covrTakafulAnnual', formatRM(takafulMonthly * 12));
+
+        setCOVRText('covrNaturalSelected', formatRM(selectedBenefits.natural));
+        setCOVRText('covrNaturalOther', formatRM(otherBenefits.natural));
+        setCOVRText('covrAccidentSelected', formatRM(selectedBenefits.accident));
+        setCOVRText('covrAccidentOther', formatRM(otherBenefits.accident));
+        setCOVRText('covrCriticalSelected', formatRM(selectedBenefits.critical));
+        setCOVRText('covrCriticalOther', formatRM(otherBenefits.critical));
+        setCOVRText('covrIdeSelected', formatRM(selectedBenefits.ide));
+        setCOVRText('covrIdeOther', formatRM(otherBenefits.ide));
+
+        const spouse = document.getElementById('covrSpouseBenefit');
+        const children = document.getElementById('covrChildrenBenefit');
+        if (spouse) spouse.textContent = coveredType === 'adult' ? formatRM(2500) : 'Not applicable';
+        if (children) children.textContent = coveredType === 'adult' ? formatRM(1000) + ' each' : 'Not applicable';
+        setCOVRText('covrBenefitNote', 'Selected account: ' + (coveredType === 'adult' ? 'Adult' : 'Minor') +
+            '. Benefit values shown are from the published IKHLAS Idaman (ASNB COVR) Product Disclosure Sheet dated 23 July 2025. Claims are subject to the takaful certificate terms, conditions and exclusions.');
     }
-    ['estateBalance','feeThreshold','feeFirstRate','feeRemainderRate'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', () => {
-            const bal = Math.max(0, getNumber('estateBalance'));
-            const limit = Math.max(0, getNumber('feeThreshold', 25000));
-            const r1 = Math.max(0, getNumber('feeFirstRate')) / 100;
-            const r2 = Math.max(0, getNumber('feeRemainderRate')) / 100;
-            const first = Math.min(bal, limit) * r1;
-            const rest = Math.max(0, bal - limit) * r2;
-            const total = first + rest;
-            const setVal = (i, v) => { const e = document.getElementById(i); if (e) e.innerText = formatRM(v); };
-            setVal('feeFirst', first);
-            setVal('feeRemainder', rest);
-            setVal('feeTotal', total);
-            setVal('estateAfterFee', Math.max(0, bal - total));
+
+    if (covrPlan) covrPlan.addEventListener('change', updateCOVRCalculator);
+    if (covrCoveredType) covrCoveredType.addEventListener('change', updateCOVRCalculator);
+    updateCOVRCalculator();
+
+    // Trust & Will Planning: status, progressive ASNB claim fee and beneficiary illustration
+    const legacyStatus = document.getElementById('legacyStatus');
+    const legacyStatusLabels = {
+        none: 'No ASNB estate-planning registration',
+        hibah: 'ASNB Hibah Amanah',
+        trust: 'ASNB Trust Declaration',
+        will: 'Conventional Will'
+    };
+    function updateLegacyStatus() {
+        if (!legacyStatus) return;
+        const status = legacyStatus.value;
+        const statusText = document.getElementById('legacyStatusText');
+        const statusNote = document.getElementById('legacyStatusNote');
+        if (statusText) statusText.textContent = legacyStatusLabels[status] || '';
+        if (statusNote) {
+            const notes = {
+                none: 'No ASNB Hibah Amanah or Trust Declaration registration is selected.',
+                hibah: 'Hibah Amanah is intended for eligible Muslim Malaysian unit holders. Check the deed and current ASNB conditions.',
+                trust: 'Trust Declaration is intended for eligible non-Muslim Malaysian unit holders. Check the deed and current ASNB conditions.',
+                will: 'A conventional will follows separate legal and probate requirements. The selection does not confirm that a will is valid or sufficient.'
+            };
+            statusNote.textContent = notes[status] || '';
+        }
+    }
+    if (legacyStatus) legacyStatus.addEventListener('change', updateLegacyStatus);
+
+    function updateLegacyCalculators() {
+        const balance = Math.max(0, getNumber('estateBalance'));
+        const tiers = [
+            { cap: 25000, rate: 0.015 },
+            { cap: 225000, rate: 0.01 },
+            { cap: 250000, rate: 0.005 },
+            { cap: 500000, rate: 0.0025 },
+            { cap: Infinity, rate: 0.001 }
+        ];
+        let remaining = balance;
+        let claimFee = 0;
+        tiers.forEach((tier, index) => {
+            const portion = Math.min(remaining, tier.cap);
+            const fee = portion * tier.rate;
+            remaining = Math.max(0, remaining - portion);
+            claimFee += fee;
+            const cell = document.getElementById('legacyTier' + (index + 1));
+            if (cell) cell.textContent = formatRM(fee);
         });
+        const sstSelect = document.getElementById('legacySST');
+        const includeSST = !!sstSelect && sstSelect.value === 'yes';
+        const sst = includeSST ? claimFee * 0.08 : 0;
+        const totalFee = claimFee + sst;
+        const setLegacyText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = formatRM(value);
+        };
+        setLegacyText('legacyClaimFee', claimFee);
+        setLegacyText('legacySSTAmount', sst);
+        setLegacyText('legacyFeeTotal', totalFee);
+        setLegacyText('legacyNetBalance', Math.max(0, balance - totalFee));
+
+        const percentages = [1, 2, 3].map(n => Math.max(0, getNumber('legacyBeneficiary' + n)));
+        const allocationTotal = percentages.reduce((sum, value) => sum + value, 0);
+        percentages.forEach((pct, index) => {
+            const amount = balance * pct / 100;
+            setLegacyText('legacyShare' + (index + 1), amount);
+            const pctEl = document.getElementById('legacySharePct' + (index + 1));
+            if (pctEl) pctEl.textContent = pct.toFixed(1) + '%';
+        });
+        const totalEl = document.getElementById('legacyAllocationTotal');
+        const statusEl = document.getElementById('legacyAllocationStatus');
+        if (totalEl) totalEl.textContent = allocationTotal.toFixed(1) + '%';
+        const valid = Math.abs(allocationTotal - 100) < 0.000001;
+        if (statusEl) {
+            statusEl.textContent = valid ? 'Valid illustration — allocation totals 100%' : 'Adjust percentages so the total equals 100%';
+            statusEl.style.color = valid ? '' : '#b45309';
+        }
+    }
+    ['estateBalance', 'legacySST', 'legacyBeneficiary1', 'legacyBeneficiary2', 'legacyBeneficiary3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', updateLegacyCalculators);
+            el.addEventListener('change', updateLegacyCalculators);
+        }
     });
-    // Trigger initial fee calc
-    const estBal = document.getElementById('estateBalance');
-    if (estBal) estBal.dispatchEvent(new Event('input'));
+    updateLegacyStatus();
+    updateLegacyCalculators();
 
     // FPSP 2026 calculator
     const fpspPackageSelect = document.getElementById('fpspPackage');
