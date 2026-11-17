@@ -506,67 +506,79 @@ body{padding:0;background:#f3f6fa}.app-shell{display:flex;min-height:100vh}
 <section class="module-panel" id="module-fpsp">
 <div class="module-heading">
   <h1>ASB Financial Planning Solution Package (FPSP)</h1>
-  <p>Build a structured multi-year wealth plan combining lump-sum and monthly recurring investments toward a specific financial goal.</p>
+  <p>Compare the two FPSP packages, review their fund allocations and estimate a one-year investment outcome.</p>
 </div>
 <div class="card">
-  <h2>FPSP Goal &amp; Portfolio Builder</h2>
-  <p class="hint">Unlike short-term promotional bonus packages (ASB Plus), FPSP is structured around long-term goal accumulation (Retirement, Education, Home Ownership) with flexible monthly recurring top-ups and custom fund ratios.</p>
+  <h2>1. Select FPSP Package</h2>
   <div class="form-grid">
     <div class="input-group">
-      <label for="fpspGoalType">Financial Planning Goal</label>
-      <select id="fpspGoalType">
-        <option value="Retirement Fund">Retirement Fund</option>
-        <option value="Child Education">Child Education</option>
-        <option value="Property Downpayment">Property Downpayment</option>
-        <option value="General Wealth Accumulation">General Wealth Accumulation</option>
+      <label for="fpspPackage">Investment Package</label>
+      <select id="fpspPackage">
+        <option value="1">Package 1 – ASN Sara / ASN Sukuk</option>
+        <option value="2">Package 2 – ASN Equity 5 / ASN Imbang 2</option>
       </select>
     </div>
-    <div class="input-group">
-      <label for="fpspTargetGoal">Target Goal Amount (RM)</label>
-      <input id="fpspTargetGoal" type="number" min="0" value="100000"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspCapital">Initial Lump-Sum Capital (RM)</label>
-      <input id="fpspCapital" type="number" min="0" value="10000"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspMonthlyTopup">Monthly Recurring Top-Up (RM)</label>
-      <input id="fpspMonthlyTopup" type="number" min="0" value="500"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspHorizon">Planning Horizon (Years)</label>
-      <input id="fpspHorizon" type="number" min="1" max="35" value="10"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspFixedPct">Fixed-Price Allocation (%)</label>
-      <input id="fpspFixedPct" type="number" min="0" max="100" value="50"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspFixedRate">Fixed-Price Return (% p.a.)</label>
-      <input id="fpspFixedRate" type="number" step="0.01" value="5.25"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspVariableRate">Variable-Price Return (% p.a.)</label>
-      <input id="fpspVariableRate" type="number" step="0.01" value="6.50"/>
-    </div>
-    <div class="input-group">
-      <label for="fpspSalesCharge">Variable-Price Sales Charge (%)</label>
-      <input id="fpspSalesCharge" type="number" min="0" step="0.01" value="1.75"/>
-    </div>
   </div>
-  <button type="button" id="calculateFPSP">Calculate FPSP Goal Projection</button>
+  <div class="result-box">
+    <h3 id="fpspPackageTitle">Package 1</h3>
+    <p><strong>Fixed-Price Funds:</strong> ASM / ASM 3</p>
+    <p><strong>Variable-Price Funds:</strong> <span id="fpspVariableFunds">ASN Sara 1 / ASN Sara 2 / ASN Sukuk</span></p>
+    <p><strong>Allocation:</strong> 50% Fixed-Price + 50% Variable-Price</p>
+    <p><strong>Lock-in Period:</strong> <span id="fpspLockPeriod">3 months</span></p>
+    <p><strong>Variable-Price Sales Charge:</strong> 1.50%</p>
+  </div>
 </div>
 <div class="card">
-  <h2>Goal Achievement &amp; Multi-Year Projection (<span id="fpspGoalLabel">Retirement Fund</span>)</h2>
-  <div class="results-grid">
-    <div class="result-box"><h3>Total Principal Contributed</h3><div class="value" id="fpspTotalPrincipal">RM 0.00</div></div>
-    <div class="result-box warning"><h3>Total Sales Charges Paid</h3><div class="value" id="fpspCharge">RM 0.00</div></div>
-    <div class="result-box profit"><h3>Projected Portfolio Value</h3><div class="value" id="fpspEnding">RM 0.00</div></div>
-    <div class="result-box"><h3>Total Investment Gain</h3><div class="value" id="fpspReturn">RM 0.00</div></div>
-    <div class="result-box profit" id="fpspGoalStatusBox"><h3>Goal Gap / Surplus</h3><div class="value" id="fpspGoalGap">RM 0.00</div><small id="fpspGoalStatusText">Target: RM 100,000.00</small></div>
+  <h2>2. Investment Inputs</h2>
+  <div class="form-grid">
+    <div class="input-group">
+      <label for="fpspCapital">Total Investment Capital (RM)</label>
+      <input id="fpspCapital" type="number" min="10000" max="30000" step="100" value="10000"/>
+      <small>Illustrative FPSP 2026 transaction range: RM10,000–RM30,000.</small>
+    </div>
+    <div class="input-group">
+      <label for="fpspFixedRate">Estimated Fixed-Price Return (% p.a.)</label>
+      <input id="fpspFixedRate" type="number" min="0" step="0.01" value="5.5"/>
+    </div>
+    <div class="input-group">
+      <label for="fpspVariableRate">Estimated Variable-Price Return (% p.a.)</label>
+      <input id="fpspVariableRate" type="number" step="0.01" value="6"/>
+    </div>
   </div>
-  <div class="chart-container"><canvas id="fpspChart"></canvas></div>
-  <p class="hint">Illustration only. Review official FPSP terms and participating funds on the <a href="https://www.asnb.com.my/campaign/fpsp-2026/" target="_blank" rel="noopener">official ASNB FPSP 2026 page</a>.</p>
+  <p class="hint">The 50:50 allocation and 1.50% variable-price sales charge reflect the published FPSP 2026 terms. Return rates are editable assumptions for simulation only; actual returns are not guaranteed. Please confirm current campaign eligibility and terms with ASNB.</p>
+  <p id="fpspInputMessage" class="hint" role="status"></p>
+  <button type="button" id="calculateFPSP">Calculate FPSP</button>
+</div>
+<div class="card">
+  <h2>3. Investment Allocation</h2>
+  <div class="results-grid">
+    <div class="result-box"><h3>Fixed-Price Allocation (50%)</h3><div class="value" id="fpspFixedAmount">RM 0.00</div><p>ASM / ASM 3</p></div>
+    <div class="result-box"><h3>Variable-Price Allocation (50%)</h3><div class="value" id="fpspVariableAmount">RM 0.00</div><p id="fpspVariableFundResult">ASN Sara 1 / ASN Sara 2 / ASN Sukuk</p></div>
+    <div class="result-box warning"><h3>Variable-Price Sales Charge (1.50%)</h3><div class="value" id="fpspCharge">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Net Invested Capital</h3><div class="value" id="fpspNetCapital">RM 0.00</div></div>
+  </div>
+</div>
+<div class="card">
+  <h2>4. Estimated One-Year Returns</h2>
+  <div class="results-grid">
+    <div class="result-box"><h3>Fixed-Price Estimated Return</h3><div class="value" id="fpspFixedReturn">RM 0.00</div></div>
+    <div class="result-box"><h3>Variable-Price Estimated Return</h3><div class="value" id="fpspVariableReturn">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Total Estimated Return</h3><div class="value" id="fpspReturn">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Estimated Value After One Year</h3><div class="value" id="fpspEnding">RM 0.00</div></div>
+  </div>
+  <p class="hint">This simplified illustration applies the selected annual return assumptions to the initial allocations for one year. It does not forecast actual NAV movements, distribution timing or reinvestment. Variable-price fund values can rise or fall.</p>
+</div>
+<div class="card">
+  <h2>5. Important FPSP Information</h2>
+  <ul>
+    <li>Both packages use a 50:50 allocation between fixed-price and variable-price funds.</li>
+    <li>Package 1 has a three-month lock-in period; Package 2 has a one-month lock-in period.</li>
+    <li>The variable-price sales charge is 1.50%; no sales charge applies to the fixed-price allocation under the published package structure.</li>
+    <li>Fixed-price fund units are subject to availability.</li>
+    <li>During the lock-in period, redemption, transfer-out and switching-out are not allowed.</li>
+  </ul>
+  <p class="hint">This calculator is an educational simulation, not an official ASNB quotation or guarantee. Participating funds, unit availability, eligibility and campaign conditions are subject to ASNB's official terms.</p>
+  <p><a href="https://www.asnb.com.my/campaign/fpsp-2026/" target="_blank" rel="noopener">View Official ASNB FPSP 2026 Information</a></p>
 </div>
 </section>
 
@@ -1132,103 +1144,63 @@ window.onload = function () {
     const estBal = document.getElementById('estateBalance');
     if (estBal) estBal.dispatchEvent(new Event('input'));
 
-    // FPSP Calculator
-    function calculateFPSP() {
-        const goalName = document.getElementById('fpspGoalType')?.value || 'Financial Goal';
-        const targetGoal = Math.max(0, parseFloat(document.getElementById('fpspTargetGoal')?.value) || 0);
-        const initCapital = Math.max(0, parseFloat(document.getElementById('fpspCapital')?.value) || 0);
-        const monthlyTopup = Math.max(0, parseFloat(document.getElementById('fpspMonthlyTopup')?.value) || 0);
-        const years = Math.max(1, Math.floor(parseFloat(document.getElementById('fpspHorizon')?.value) || 10));
-
-        const fixedPct = Math.min(100, Math.max(0, parseFloat(document.getElementById('fpspFixedPct')?.value) || 0)) / 100;
-        const varPct = 1 - fixedPct;
-        const fixedRate = (parseFloat(document.getElementById('fpspFixedRate')?.value) || 0) / 100;
-        const varRate = (parseFloat(document.getElementById('fpspVariableRate')?.value) || 0) / 100;
-        const salesCharge = Math.max(0, parseFloat(document.getElementById('fpspSalesCharge')?.value) || 0) / 100;
-
-        let fixedBal = initCapital * fixedPct;
-        let varGrossInit = initCapital * varPct;
-        let totalCharges = varGrossInit * salesCharge;
-        let varBal = varGrossInit - totalCharges;
-        let totalPrincipal = initCapital;
-
-        const labels = ['Start'];
-        const principalSeries = [initCapital];
-        const valueSeries = [fixedBal + varBal];
-        const targetSeries = [targetGoal];
-
-        for (let y = 1; y <= years; y++) {
-            for (let m = 1; m <= 12; m++) {
-                const mFixed = monthlyTopup * fixedPct;
-                const mVarGross = monthlyTopup * varPct;
-                const mCharge = mVarGross * salesCharge;
-                const mVarNet = mVarGross - mCharge;
-
-                totalPrincipal += monthlyTopup;
-                totalCharges += mCharge;
-                fixedBal = (fixedBal + mFixed) * (1 + fixedRate / 12);
-                varBal = (varBal + mVarNet) * (1 + varRate / 12);
-            }
-            labels.push('Year ' + y);
-            principalSeries.push(totalPrincipal);
-            valueSeries.push(fixedBal + varBal);
-            targetSeries.push(targetGoal);
-        }
-
-        const endingVal = fixedBal + varBal;
-        const netGain = endingVal - totalPrincipal;
-        const gap = endingVal - targetGoal;
-
-        const fmt = x => 'RM ' + x.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
-
-        setVal('fpspGoalLabel', goalName);
-        setVal('fpspTotalPrincipal', fmt(totalPrincipal));
-        setVal('fpspCharge', fmt(totalCharges));
-        setVal('fpspEnding', fmt(endingVal));
-        setVal('fpspReturn', fmt(netGain));
-
-        const gapEl = document.getElementById('fpspGoalGap');
-        const statusBox = document.getElementById('fpspGoalStatusBox');
-        const statusText = document.getElementById('fpspGoalStatusText');
-
-        if (gap >= 0) {
-            if (gapEl) gapEl.textContent = '+' + fmt(gap);
-            if (statusBox) statusBox.className = 'result-box profit';
-            if (statusText) statusText.textContent = 'Target Met! (' + fmt(targetGoal) + ')';
-        } else {
-            if (gapEl) gapEl.textContent = '-' + fmt(Math.abs(gap));
-            if (statusBox) statusBox.className = 'result-box warning';
-            if (statusText) statusText.textContent = 'Shortfall vs Target (' + fmt(targetGoal) + ')';
-        }
-
-        const canvas = document.getElementById('fpspChart');
-        if (canvas && window.Chart) {
-            if (window.fpspChartInstance) window.fpspChartInstance.destroy();
-            window.fpspChartInstance = new Chart(canvas.getContext('2d'), {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [
-                        { label: 'Projected Portfolio Value', data: valueSeries, borderColor: '#0e8b83', backgroundColor: 'rgba(14, 139, 131, 0.12)', borderWidth: 3, fill: true, tension: 0.25 },
-                        { label: 'Total Principal Contributed', data: principalSeries, borderColor: '#64748b', borderDash: [5, 5], borderWidth: 2, fill: false },
-                        { label: 'Target Goal (' + fmt(targetGoal) + ')', data: targetSeries, borderColor: '#f59e0b', borderWidth: 2, pointRadius: 0, fill: false }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: v => 'RM ' + Number(v).toLocaleString() } } } }
-            });
-        }
+    // FPSP 2026 calculator
+    const fpspPackageSelect = document.getElementById('fpspPackage');
+    function formatFPSPRM(value) {
+        return 'RM ' + value.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
-    const calcFPSPBtn = document.getElementById('calculateFPSP');
-    if (calcFPSPBtn) calcFPSPBtn.addEventListener('click', calculateFPSP);
-    ['fpspGoalType', 'fpspTargetGoal', 'fpspCapital', 'fpspMonthlyTopup', 'fpspHorizon', 'fpspFixedPct', 'fpspFixedRate', 'fpspVariableRate', 'fpspSalesCharge'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.addEventListener('input', calculateFPSP);
-            el.addEventListener('change', calculateFPSP);
+    function updateFPSPPackage() {
+        const packageOne = !fpspPackageSelect || fpspPackageSelect.value === '1';
+        const funds = packageOne ? 'ASN Sara 1 / ASN Sara 2 / ASN Sukuk' : 'ASN Equity 5 / ASN Imbang 2';
+        const title = document.getElementById('fpspPackageTitle');
+        const variableFunds = document.getElementById('fpspVariableFunds');
+        const variableFundResult = document.getElementById('fpspVariableFundResult');
+        const lockPeriod = document.getElementById('fpspLockPeriod');
+        if (title) title.textContent = packageOne ? 'Package 1' : 'Package 2';
+        if (variableFunds) variableFunds.textContent = funds;
+        if (variableFundResult) variableFundResult.textContent = funds;
+        if (lockPeriod) lockPeriod.textContent = packageOne ? '3 months' : '1 month';
+        calculateFPSP();
+    }
+    function calculateFPSP() {
+        const capitalInput = document.getElementById('fpspCapital');
+        const capital = Math.max(0, Number.parseFloat(capitalInput?.value) || 0);
+        const fixedRate = (Number.parseFloat(document.getElementById('fpspFixedRate')?.value) || 0) / 100;
+        const variableRate = (Number.parseFloat(document.getElementById('fpspVariableRate')?.value) || 0) / 100;
+        const message = document.getElementById('fpspInputMessage');
+        const validCapital = capital >= 10000 && capital <= 30000;
+        if (message) message.textContent = validCapital ? '' : 'Please enter an investment amount between RM10,000 and RM30,000 for this illustrative FPSP 2026 calculator.';
+        if (capitalInput) capitalInput.setCustomValidity(validCapital ? '' : 'Enter an amount from RM10,000 to RM30,000.');
+        const fixedAmount = capital * 0.50;
+        const variableAmount = capital * 0.50;
+        const salesCharge = variableAmount * 0.015;
+        const netVariableAmount = variableAmount - salesCharge;
+        const netInvestedCapital = fixedAmount + netVariableAmount;
+        const fixedReturn = fixedAmount * fixedRate;
+        const variableReturn = netVariableAmount * variableRate;
+        const totalReturn = fixedReturn + variableReturn;
+        const endingValue = netInvestedCapital + totalReturn;
+        const display = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = formatFPSPRM(value); };
+        display('fpspFixedAmount', fixedAmount);
+        display('fpspVariableAmount', variableAmount);
+        display('fpspCharge', salesCharge);
+        display('fpspNetCapital', netInvestedCapital);
+        display('fpspFixedReturn', fixedReturn);
+        display('fpspVariableReturn', variableReturn);
+        display('fpspReturn', totalReturn);
+        display('fpspEnding', endingValue);
+    }
+    if (fpspPackageSelect) fpspPackageSelect.addEventListener('change', updateFPSPPackage);
+    ['fpspCapital', 'fpspFixedRate', 'fpspVariableRate'].forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener('input', calculateFPSP);
+            input.addEventListener('change', calculateFPSP);
         }
     });
-    calculateFPSP();
+    const fpspCalculateButton = document.getElementById('calculateFPSP');
+    if (fpspCalculateButton) fpspCalculateButton.addEventListener('click', calculateFPSP);
+    updateFPSPPackage();
 
     // Campaigns ticker
     const asnbCampaigns = [
