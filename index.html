@@ -506,7 +506,7 @@ body{padding:0;background:#f3f6fa}.app-shell{display:flex;min-height:100vh}
 <section class="module-panel" id="module-fpsp">
 <div class="module-heading">
   <h1>ASB Financial Planning Solution Package (FPSP)</h1>
-  <p>Explore the FPSP 2026 online package, its participating funds, campaign benefits and an illustrative one-year investment outcome.</p>
+  <p>Compare the two FPSP packages, review their fund allocations and estimate a one-year investment outcome.</p>
 </div>
 <div class="card">
   <h2>1. Select FPSP Package</h2>
@@ -514,98 +514,76 @@ body{padding:0;background:#f3f6fa}.app-shell{display:flex;min-height:100vh}
     <div class="input-group">
       <label for="fpspPackage">Investment Package</label>
       <select id="fpspPackage">
-        <option value="1">Package 1 – ASN Sara 1 / ASN Sara 2 / ASN Sukuk</option>
-        <option value="2">Package 2 – ASN Equity 5 / ASN Imbang 2 / ASN Equity Global</option>
+        <option value="1">Package 1 – ASN Sara / ASN Sukuk</option>
+        <option value="2">Package 2 – ASN Equity 5 / ASN Imbang 2</option>
       </select>
     </div>
   </div>
   <div class="result-box">
     <h3 id="fpspPackageTitle">Package 1</h3>
-    <p><strong>Variable-Price Funds (60%):</strong> <span id="fpspVariableFunds">ASN Sara 1 / ASN Sara 2 / ASN Sukuk</span></p>
-    <p><strong>Fixed-Price Fund (40%):</strong> ASM</p>
-    <p><strong>Allocation:</strong> 60% Variable-Price + 40% Fixed-Price</p>
+    <p><strong>Fixed-Price Funds:</strong> ASM / ASM 3</p>
+    <p><strong>Variable-Price Funds:</strong> <span id="fpspVariableFunds">ASN Sara 1 / ASN Sara 2 / ASN Sukuk</span></p>
+    <p><strong>Allocation:</strong> 40% Fixed-Price + 60% Variable-Price</p>
     <p><strong>Lock-in Period:</strong> <span id="fpspLockPeriod">3 months</span></p>
+    <p><strong>Variable-Price Sales Charge:</strong> 1.50%</p>
   </div>
 </div>
 <div class="card">
-  <h2>2. Special Online Offer — FPSP 2026</h2>
-  <div class="result-box profit">
-    <h3 id="fpspCampaignStatus">Special online offer</h3>
-    <p><strong>Campaign period:</strong> 9 October – 30 November 2026, or until participating fixed-price units are unavailable, whichever is earlier.</p>
-    <p><strong>Minimum investment:</strong> RM5,000 per package</p>
-    <p><strong>Variable-price sales charge:</strong> 1.00% + 8% SST on the sales charge</p>
-    <p><strong>Allocation:</strong> 60% Variable-Price + 40% ASM</p>
-    <p><strong>Extra campaign benefit:</strong> 2X Pandu Impianmu 2.0 ticket entries with promo code <strong>GENLABUR</strong>.</p>
-    <p id="fpspCampaignStatusNote" class="hint">This is a time-limited online offer for eligible subscriptions through the myASNB app or portal. OTC subscriptions follow separate terms and conditions.</p>
-  </div>
-  <p class="hint">The promotional benefits above are not permanent FPSP features. After the campaign ends, the sales-charge field below becomes editable so users can enter the rate confirmed for their selected fund and transaction channel. The old package allocation, minimum investment and lock-in details remain historical campaign assumptions and must not be treated as a new active ASNB offer.</p>
-  <p><a href="https://www.asnb.com.my/campaign/fpsp-2026" target="_blank" rel="noopener">View Official ASNB FPSP 2026 Campaign</a></p>
-</div>
-<div class="card">
-  <h2>3. Investment Inputs</h2>
+  <h2>2. Investment Inputs</h2>
   <div class="form-grid">
     <div class="input-group">
-      <label for="fpspCapital">Total Package Investment (RM)</label>
-      <input id="fpspCapital" type="number" min="5000" step="100" value="5000"/>
-      <small>Minimum RM5,000 per package under the 9 October–30 November 2026 online offer. No maximum is assumed by this educational calculator.</small>
+      <label for="fpspCapital">Total Investment Capital (RM)</label>
+      <input id="fpspCapital" type="number" min="10000" max="30000" step="100" value="10000"/>
+      <small>Illustrative FPSP 2026 transaction range: RM10,000–RM30,000.</small>
     </div>
     <div class="input-group">
-      <label for="fpspFixedRate">Estimated ASM Return (% p.a.)</label>
-      <input id="fpspFixedRate" type="number" min="0" step="0.01" value="5.0"/>
+      <label for="fpspFixedRate">Estimated Fixed-Price Return (% p.a.)</label>
+      <input id="fpspFixedRate" type="number" min="0" step="0.01" value="5.5"/>
     </div>
     <div class="input-group">
       <label for="fpspVariableRate">Estimated Variable-Price Return (% p.a.)</label>
       <input id="fpspVariableRate" type="number" step="0.01" value="6"/>
     </div>
     <div class="input-group">
-      <label for="fpspSalesChargeRate">Variable-Price Fund Sales Charge (%)</label>
-      <input id="fpspSalesChargeRate" type="number" min="0" max="100" step="0.01" value="1.00" readonly aria-describedby="fpspSalesChargeHelp"/>
-      <small id="fpspSalesChargeHelp">During the 2026 promotion, the eligible online rate is 1.00%. After the campaign, enter the rate confirmed by ASNB for the selected fund and channel.</small>
+      <label for="fpspSalesChargeRate">Variable-Price Sales Charge (%)</label>
+      <input id="fpspSalesChargeRate" type="number" min="0" step="0.01" value="1.00"/>
+      <small>Editable. Update this rate when ASNB's applicable sales charge changes.</small>
     </div>
   </div>
-  <div class="input-group" style="margin-top:12px">
-    <label><input id="fpspApplySST" type="checkbox" checked style="width:auto;margin-right:8px"/>Include 8% SST on sales charge, where applicable</label>
-  </div>
-  <p class="hint">Return rates and post-campaign sales charges are user-entered assumptions, not ASNB forecasts or official quotations. Variable-price fund returns can be positive or negative. Sales charge and SST are deducted from the variable-price allocation in this illustration. Confirm whether SST applies to the selected transaction before calculating.</p>
+  <p class="hint">This calculator uses a 60% variable-price and 40% fixed-price allocation. The variable-price sales charge is editable so users can update it according to the applicable ASNB terms. Return rates are editable assumptions for simulation only; actual returns are not guaranteed. Please confirm current campaign eligibility and terms with ASNB.</p>
   <p id="fpspInputMessage" class="hint" role="status"></p>
   <button type="button" id="calculateFPSP">Calculate FPSP</button>
 </div>
 <div class="card">
-  <h2>4. Investment Allocation &amp; Charges</h2>
+  <h2>3. Investment Allocation</h2>
   <div class="results-grid">
+    <div class="result-box"><h3>Fixed-Price Allocation (40%)</h3><div class="value" id="fpspFixedAmount">RM 0.00</div><p>ASM / ASM 3</p></div>
     <div class="result-box"><h3>Variable-Price Allocation (60%)</h3><div class="value" id="fpspVariableAmount">RM 0.00</div><p id="fpspVariableFundResult">ASN Sara 1 / ASN Sara 2 / ASN Sukuk</p></div>
-    <div class="result-box"><h3>Fixed-Price Allocation (40%)</h3><div class="value" id="fpspFixedAmount">RM 0.00</div><p>ASM</p></div>
-    <div class="result-box warning"><h3>Variable-Price Sales Charge</h3><div class="value" id="fpspCharge">RM 0.00</div><p id="fpspChargeRateLabel">Rate: 1.00%</p></div>
-    <div class="result-box warning"><h3>SST on Sales Charge</h3><div class="value" id="fpspSST">RM 0.00</div><p id="fpspSSTLabel">8% SST included, where applicable</p></div>
-    <div class="result-box"><h3>Net Variable-Price Investment</h3><div class="value" id="fpspNetVariable">RM 0.00</div></div>
-    <div class="result-box profit"><h3>Total Net Invested Capital</h3><div class="value" id="fpspNetCapital">RM 0.00</div></div>
+    <div class="result-box warning"><h3>Variable-Price Sales Charge</h3><div class="value" id="fpspCharge">RM 0.00</div></div>
+    <div class="result-box profit"><h3>Net Invested Capital</h3><div class="value" id="fpspNetCapital">RM 0.00</div></div>
   </div>
-  <p class="hint">The 60% / 40% split is calculated from the package amount before the variable-price sales charge and SST. ASNB states that the sales charge and SST are deducted from the variable-price fund investment amount upon transaction completion. No sales charge applies to the ASM allocation.</p>
 </div>
 <div class="card">
-  <h2>5. Estimated One-Year Returns</h2>
+  <h2>4. Estimated One-Year Returns</h2>
   <div class="results-grid">
-    <div class="result-box"><h3>ASM Estimated Return</h3><div class="value" id="fpspFixedReturn">RM 0.00</div></div>
+    <div class="result-box"><h3>Fixed-Price Estimated Return</h3><div class="value" id="fpspFixedReturn">RM 0.00</div></div>
     <div class="result-box"><h3>Variable-Price Estimated Return</h3><div class="value" id="fpspVariableReturn">RM 0.00</div></div>
     <div class="result-box profit"><h3>Total Estimated Return</h3><div class="value" id="fpspReturn">RM 0.00</div></div>
     <div class="result-box profit"><h3>Estimated Value After One Year</h3><div class="value" id="fpspEnding">RM 0.00</div></div>
   </div>
-  <p class="hint">This simplified illustration applies the selected annual return assumptions to the net initial allocations for one year. It does not forecast actual NAV movements, distribution timing or reinvestment. The actual value of variable-price funds may rise or fall.</p>
+  <p class="hint">This simplified illustration applies the selected annual return assumptions to the initial allocations for one year. It does not forecast actual NAV movements, distribution timing or reinvestment. Variable-price fund values can rise or fall.</p>
 </div>
 <div class="card">
-  <h2>6. Important FPSP Conditions</h2>
+  <h2>5. Important FPSP Information</h2>
   <ul>
-    <li>The digital campaign is available from 9 October to 30 November 2026, or until participating fixed-price units are unavailable, whichever is earlier.</li>
-    <li>The offer is for eligible subscriptions through the myASNB app or portal. Over-the-counter subscriptions follow separate terms and conditions.</li>
-    <li>Package 1: ASN Sara 1 / ASN Sara 2 / ASN Sukuk (60%) and ASM (40%); three-month lock-in.</li>
-    <li>Package 2: ASN Equity 5 / ASN Imbang 2 / ASN Equity Global (60%) and ASM (40%); one-month lock-in.</li>
-    <li>During the applicable lock-in period, redemption, transfer-out and switching-out of the package investments are not allowed, subject to the terms and permitted cooling-off rights.</li>
-    <li>First-time investors in a participating variable-price fund may be entitled to a six-business-day cooling-off period under the campaign terms.</li>
-    <li>EPF-MIS, switch-in, transfer-in and third-party subscriptions through myASNB are not applicable under this package.</li>
-    <li>ASM units are subject to availability. Investors must meet the eligibility and suitability requirements of the participating funds.</li>
+    <li>Both packages use a 60:40 allocation: 60% variable-price funds and 40% fixed-price funds.</li>
+    <li>Package 1 has a three-month lock-in period; Package 2 has a one-month lock-in period.</li>
+    <li>The variable-price sales charge is applied only to the variable-price allocation. Enter the applicable rate in the Investment Inputs section; no sales charge is calculated on the fixed-price allocation.</li>
+    <li>Fixed-price fund units are subject to availability.</li>
+    <li>During the lock-in period, redemption, transfer-out and switching-out are not allowed.</li>
   </ul>
-  <p class="hint">FPSP is a campaign-based package, not a permanent 60:40 product structure. Future campaigns may have different allocations, participating funds, charges, minimum investments and lock-in periods. This calculator is an educational simulation, not an official ASNB quotation or guarantee. Please read the latest campaign terms, fund prospectuses and Product Highlights Sheets before investing.</p>
-  <p><a href="https://cms.myasnb.com.my/uploads/FPSP_DIGITAL_TNC_EN_Oct26_ddd5bbcca6.pdf" target="_blank" rel="noopener">Read Official FPSP 2026 Digital Terms &amp; Conditions</a></p>
+  <p class="hint">This calculator is an educational simulation, not an official ASNB quotation or guarantee. Participating funds, unit availability, eligibility and campaign conditions are subject to ASNB's official terms.</p>
+  <p><a href="https://www.asnb.com.my/campaign/fpsp-2026/" target="_blank" rel="noopener">View Official ASNB FPSP 2026 Information</a></p>
 </div>
 </section>
 
@@ -1429,25 +1407,14 @@ window.onload = function () {
     updateLegacyStatus();
     updateLegacyCalculators();
 
-    // FPSP calculator: promotional sales charge during the 2026 campaign,
-    // user-entered sales charge after expiry. Dates use Malaysia time (UTC+8).
+    // FPSP 2026 calculator
     const fpspPackageSelect = document.getElementById('fpspPackage');
-    const fpspSalesChargeInput = document.getElementById('fpspSalesChargeRate');
-    const fpspApplySST = document.getElementById('fpspApplySST');
     function formatFPSPRM(value) {
         return 'RM ' + value.toLocaleString('en-MY', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
-    function isFPSPCampaignActive() {
-        const now = new Date();
-        const campaignStart = new Date('2026-10-09T00:00:00+08:00');
-        const campaignEnd = new Date('2026-11-30T23:59:59+08:00');
-        return now >= campaignStart && now <= campaignEnd;
-    }
     function updateFPSPPackage() {
         const packageOne = !fpspPackageSelect || fpspPackageSelect.value === '1';
-        const funds = packageOne
-            ? 'ASN Sara 1 / ASN Sara 2 / ASN Sukuk'
-            : 'ASN Equity 5 / ASN Imbang 2 / ASN Equity Global';
+        const funds = packageOne ? 'ASN Sara 1 / ASN Sara 2 / ASN Sukuk' : 'ASN Equity 5 / ASN Imbang 2';
         const title = document.getElementById('fpspPackageTitle');
         const variableFunds = document.getElementById('fpspVariableFunds');
         const variableFundResult = document.getElementById('fpspVariableFundResult');
@@ -1458,93 +1425,35 @@ window.onload = function () {
         if (lockPeriod) lockPeriod.textContent = packageOne ? '3 months' : '1 month';
         calculateFPSP();
     }
-    function updateFPSPCampaignControls() {
-        const active = isFPSPCampaignActive();
-        const campaignStatus = document.getElementById('fpspCampaignStatus');
-        const campaignNote = document.getElementById('fpspCampaignStatusNote');
-        const chargeHelp = document.getElementById('fpspSalesChargeHelp');
-        const rateLabel = document.getElementById('fpspChargeRateLabel');
-        if (fpspSalesChargeInput) {
-            if (active) {
-                fpspSalesChargeInput.value = '1.00';
-                fpspSalesChargeInput.readOnly = true;
-                fpspSalesChargeInput.required = false;
-            } else {
-                // Do not invent a post-campaign ASNB rate. Require the user to enter a verified rate.
-                if (fpspSalesChargeInput.dataset.campaignMode !== 'manual') fpspSalesChargeInput.value = '';
-                fpspSalesChargeInput.readOnly = false;
-                fpspSalesChargeInput.required = true;
-            }
-            fpspSalesChargeInput.dataset.campaignMode = active ? 'promotion' : 'manual';
-        }
-        if (campaignStatus && campaignNote) {
-            if (active) {
-                campaignStatus.textContent = 'Limited-time online offer — active campaign dates';
-                campaignNote.textContent = 'The eligible online promotional sales charge is fixed at 1.00% until 30 November 2026, or earlier if participating fixed-price units are unavailable. Eligibility and terms apply.';
-                if (chargeHelp) chargeHelp.textContent = 'Locked at the eligible 1.00% promotional rate while the stated campaign dates are active. The campaign may end earlier if participating fixed-price units become unavailable.';
-            } else {
-                campaignStatus.textContent = '2026 online promotion is not active';
-                campaignNote.textContent = 'The 2026 promotional rate and rewards are not applied. Enter the current sales-charge rate confirmed by ASNB for the selected variable-price fund and transaction channel.';
-                if (chargeHelp) chargeHelp.textContent = 'Enter the current rate confirmed by ASNB for the selected fund and transaction channel. Do not assume the previous 1.00% promotional rate still applies.';
-            }
-        }
-        if (rateLabel) rateLabel.textContent = active ? 'Promotional rate: 1.00%' : 'User-entered rate (verify with ASNB)';
-        calculateFPSP();
-    }
     function calculateFPSP() {
         const capitalInput = document.getElementById('fpspCapital');
         const capital = Math.max(0, Number.parseFloat(capitalInput?.value) || 0);
         const fixedRate = (Number.parseFloat(document.getElementById('fpspFixedRate')?.value) || 0) / 100;
         const variableRate = (Number.parseFloat(document.getElementById('fpspVariableRate')?.value) || 0) / 100;
         const message = document.getElementById('fpspInputMessage');
-        const campaignActive = isFPSPCampaignActive();
-        const rateRaw = fpspSalesChargeInput?.value?.trim() ?? '';
-        const rateNumber = rateRaw === '' ? NaN : Number(rateRaw);
-        const validRate = Number.isFinite(rateNumber) && rateNumber >= 0 && rateNumber <= 100;
-        const validCapital = capital > 0 && (!campaignActive || capital >= 5000);
-        const sstApplicable = !!fpspApplySST?.checked;
-        if (message) {
-            if (!validCapital) message.textContent = campaignActive ? 'The minimum package investment during the 2026 online offer is RM5,000.' : 'Enter an investment amount greater than RM0.';
-            else if (!validRate) message.textContent = 'Enter the current sales-charge rate confirmed by ASNB before calculating.';
-            else message.textContent = campaignActive ? '2026 campaign assumptions are being used. Check unit availability and eligibility.' : 'Manual sales-charge mode: verify the entered rate and SST applicability with ASNB.';
-        }
-        if (capitalInput) capitalInput.setCustomValidity(validCapital ? '' : (campaignActive ? 'Enter at least RM5,000 during the campaign.' : 'Enter an amount greater than RM0.'));
-        if (fpspSalesChargeInput) fpspSalesChargeInput.setCustomValidity(validRate ? '' : 'Enter a valid sales-charge rate confirmed by ASNB.');
-
-        // 60:40 and fund/package assumptions are the 2026 campaign scenario only.
-        const variableAmount = capital * 0.60;
+        const validCapital = capital >= 10000 && capital <= 30000;
+        if (message) message.textContent = validCapital ? '' : 'Please enter an investment amount between RM10,000 and RM30,000 for this illustrative FPSP 2026 calculator.';
+        if (capitalInput) capitalInput.setCustomValidity(validCapital ? '' : 'Enter an amount from RM10,000 to RM30,000.');
         const fixedAmount = capital * 0.40;
-        const salesCharge = validRate ? variableAmount * rateNumber / 100 : 0;
-        const salesChargeSST = validRate && sstApplicable ? salesCharge * 0.08 : 0;
-        const totalVariableCharges = salesCharge + salesChargeSST;
-        const netVariableAmount = variableAmount - totalVariableCharges;
+        const variableAmount = capital * 0.60;
+        const salesChargeRateInput = document.getElementById('fpspSalesChargeRate');
+        const salesChargeRate = Math.max(0, Number.parseFloat(salesChargeRateInput?.value) || 0) / 100;
+        const salesCharge = variableAmount * salesChargeRate;
+        const netVariableAmount = variableAmount - salesCharge;
         const netInvestedCapital = fixedAmount + netVariableAmount;
         const fixedReturn = fixedAmount * fixedRate;
         const variableReturn = netVariableAmount * variableRate;
         const totalReturn = fixedReturn + variableReturn;
         const endingValue = netInvestedCapital + totalReturn;
-        const display = (id, value) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = formatFPSPRM(value);
-        };
-        display('fpspVariableAmount', variableAmount);
+        const display = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = formatFPSPRM(value); };
         display('fpspFixedAmount', fixedAmount);
+        display('fpspVariableAmount', variableAmount);
         display('fpspCharge', salesCharge);
-        display('fpspSST', salesChargeSST);
-        display('fpspNetVariable', netVariableAmount);
         display('fpspNetCapital', netInvestedCapital);
         display('fpspFixedReturn', fixedReturn);
         display('fpspVariableReturn', variableReturn);
         display('fpspReturn', totalReturn);
         display('fpspEnding', endingValue);
-        const sstLabel = document.getElementById('fpspSSTLabel');
-        if (sstLabel) sstLabel.textContent = sstApplicable ? '8% SST included (confirm applicability)' : 'SST not included';
-        if (!validRate || !validCapital) {
-            ['fpspCharge','fpspSST','fpspNetVariable','fpspNetCapital','fpspFixedReturn','fpspVariableReturn','fpspReturn','fpspEnding'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.textContent = '—';
-            });
-        }
     }
     if (fpspPackageSelect) fpspPackageSelect.addEventListener('change', updateFPSPPackage);
     ['fpspCapital', 'fpspFixedRate', 'fpspVariableRate', 'fpspSalesChargeRate'].forEach(id => {
@@ -1554,11 +1463,9 @@ window.onload = function () {
             input.addEventListener('change', calculateFPSP);
         }
     });
-    if (fpspApplySST) fpspApplySST.addEventListener('change', calculateFPSP);
     const fpspCalculateButton = document.getElementById('calculateFPSP');
     if (fpspCalculateButton) fpspCalculateButton.addEventListener('click', calculateFPSP);
     updateFPSPPackage();
-    updateFPSPCampaignControls();
 
     // Campaigns ticker
     const asnbCampaigns = [
